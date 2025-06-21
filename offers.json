@@ -18,5 +18,15 @@
     "tracking_link": "https://link.hiqmobi.com/go/28/1255?p1={user}&p2={refer}&p3=100&p4=150",
     "status": "active",
     "payment": "instant"
+  },
+  {
+    "offer": "Kuku FM",
+    "id": "122",
+    "User": "15",
+    "refer": "15",
+    "status": "active",
+    "payment": "Instant",
+    "description": "Hiii\\n hello\\n hoii\\n help",
+    "tracking_link": "https://link.hiqmobi.com/go/122/1255?p1={user}&p2={refer}&p3=100&p4=150"
   }
 ]
