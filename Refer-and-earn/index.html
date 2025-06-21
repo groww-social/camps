@@ -26,7 +26,7 @@
     const offerSelect = document.getElementById("offer");
 
     async function loadOffers() {
-      const res = await fetch("offers.json");
+      const res = await fetch("https://groww-social.github.io/camps/offers.json");
       const offers = await res.json();
 
       offers.forEach((o, idx) => {
