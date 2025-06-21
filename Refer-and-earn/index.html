@@ -75,7 +75,7 @@
       const upi = document.getElementById("upi").value.trim();
       if (!upi) return alert("Enter valid UPI ID");
 
-      const offers = await (await fetch("offers.json")).json();
+      const offers = await (await fetch("https://groww-social.github.io/camps/offers.json")).json();
       const offer = offers[offerIndex];
 
       const { refers, sha } = await loadRefers();
