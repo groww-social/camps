@@ -82,7 +82,7 @@
       border-radius: 25px; border: none; width: 100%; cursor: pointer;
     }
     .telegram-btn {
-      margin: 30px auto; display: block; text-align: center; background: linear-gradient(135deg, #00bcd4, #0097a7);
+      margin: 30px auto; display: block; text-align: center; 
       color: white; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 25px;
       padding: 14px 20px; box-shadow: 0 6px 20px rgba(0, 188, 212, 0.3); transition: all 0.3s ease; width: 200px;
     }
@@ -97,3 +97,10 @@
       font-size: 22px; font-weight: 600; color: #3f51b5; background: rgba(255, 255, 255, 0.8);
       padding: 8px 20px; border-radius: 25px; box-shadow: 0 4px 14px rgba(63, 81, 181, 0.1);
     }
+
+
+.telegram-btn {
+    background-image: url('https://groww-social.github.io/camps/images/money.jpg');
+  background-size: cover;
+  background-position: center;
+}
