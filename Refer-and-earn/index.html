@@ -1,0 +1,67 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Refer Link Creator</title>
+  <style>
+    body { font-family: sans-serif; padding: 20px; background: #111; color: #fff; }
+    select, input, button { padding: 10px; margin: 10px 0; width: 100%; border-radius: 6px; border: none; font-size: 1em; }
+    button { background: #2ecc71; color: #fff; cursor: pointer; }
+    .link-box { margin-top: 20px; padding: 10px; background: #222; border-radius: 8px; }
+    .offer-item { padding: 6px 0; }
+  </style>
+</head>
+<body>
+  <h2>🔗 Create Your Referral Link</h2><label for="offer">Select Offer</label> <select id="offer"></select>
+
+<label for="upi">Enter Your UPI ID</label> <input type="text" id="upi" placeholder="example@upi" />
+
+<button onclick="createReferLink()">Create Refer Link</button>
+
+  <div id="output" class="link-box" style="display: none;">
+    <strong>Your Link:</strong>
+    <p id="ref-link"></p>
+    <button onclick="copyLink()">Copy</button>
+  </div>  <script src="js/github-api.js"></script>  <script>
+    const offerSelect = document.getElementById("offer");
+
+    async function loadOffers() {
+      const res = await fetch("offers.json");
+      const offers = await res.json();
+
+      offers.forEach((o, idx) => {
+        const option = document.createElement("option");
+        option.value = idx;
+        option.textContent = ${o.offer} (₹${o.refer});
+        offerSelect.appendChild(option);
+      });
+    }
+
+    async function createReferLink() {
+      const offerIndex = offerSelect.value;
+      const upi = document.getElementById("upi").value.trim();
+      if (!upi) return alert("Enter valid UPI ID");
+
+      const offers = await (await fetch("offers.json")).json();
+      const offer = offers[offerIndex];
+
+      const refers = await loadRefers();
+      const newId = refers.length + 1;
+
+      refers.push({ upi, id: newId.toString() });
+      await saveRefers(refers);
+
+      const link = https://yourdomain.in/c/?id=${offerIndex}&ref=${newId};
+      document.getElementById("ref-link").textContent = link;
+      document.getElementById("output").style.display = "block";
+    }
+
+    function copyLink() {
+      const text = document.getElementById("ref-link").textContent;
+      navigator.clipboard.writeText(text);
+      alert("Link copied!");
+    }
+
+    loadOffers();
+  </script></body>
+</html>
