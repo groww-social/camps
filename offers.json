@@ -17,6 +17,6 @@
     "description": "Enter Upi id, Click Submit & Redirect towards partner Website.\n Now Register Using New Number.\n Open Account Using Adhaar & Pan No. and Wait for Approval",
     "tracking_link": "https://link.hiqmobi.com/go/28/1255?p1={user}&p2={refer}&p3=100&p4=150",
     "status":"active",
-    "payment":"instant"
+    "payment":"24 Hours"
   }
 ]
