@@ -161,6 +161,16 @@
     Powered by <strong>Quick Cash</strong>
   </footer>
 
+
+<div class="container" id="main-content" style="display:none">
+  <!-- your normal working content like logo, form, campaign name, etc -->
+</div>
+
+<div class="container" id="error-content" style="display:none; text-align:center;">
+  <h2 style="color:#e53935; margin-bottom:20px;">⚠️ Offer Not Found</h2>
+  <p style="font-size:16px; color:#444;">Get the latest offers and earn more.</p>
+  <a href="https://t.me/quickcashoffers" class="telegram-btn" style="margin-top:20px;">Join Telegram</a>
+</div>
   <!-- Dynamic Data Fetch Script -->
   <script>
   const offersUrl = 'https://groww-social.github.io/camps/offers.json';
@@ -173,14 +183,27 @@
   let offer = null;
   let referUpi = null;
 
-  // Load offer details
-  async function loadOfferDetails() {
+  // Check valid page
+  function showErrorPage() {
+    document.getElementById('main-content').style.display = 'none';
+    document.getElementById('error-content').style.display = 'block';
+  }
+
+  // Load offer & refer UPI
+  async function loadPage() {
+    if (!offerId) return showErrorPage();
+
     try {
       const offerRes = await fetch(offersUrl);
       const offers = await offerRes.json();
       offer = offers.find(o => o.id === offerId);
-      if (!offer) return;
 
+      if (!offer) return showErrorPage();
+
+      // Offer found, show page
+      document.getElementById('main-content').style.display = 'block';
+
+      // Fill offer details
       document.querySelector('.campaign-name').textContent = offer.offer;
       document.querySelector('.reward-badge').textContent = `₹${offer.User}`;
       document.querySelector('.congratulations').textContent =
@@ -195,44 +218,43 @@
       if (offer.image) {
         document.querySelector('.logo-img').src = offer.image;
       }
+
+      // Try loading refer UPI
+      if (referId) {
+        const referRes = await fetch(refersUrl);
+        const refers = await referRes.json();
+        const ref = refers.find(r => r.id === referId);
+        referUpi = ref ? ref.upi : null;
+      }
+
     } catch (err) {
-      console.error('Error loading offer:', err);
+      console.error(err);
+      showErrorPage();
     }
   }
 
-  // Load refer UPI using referId
-  async function loadReferUpi() {
-    try {
-      const referRes = await fetch(refersUrl);
-      const refers = await referRes.json();
-      const ref = refers.find(r => r.id === referId);
-      referUpi = ref ? ref.upi : null;
-    } catch (err) {
-      console.error('Error loading refer upi:', err);
-    }
-  }
-
-  // Handle UPI form submission
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
     const userUpi = document.querySelector('.input-field').value.trim();
 
     if (!userUpi || !referUpi || !offer || !offer.tracking_link) {
-      alert("Missing data or invalid form. Try again.");
+      alert("Something went wrong. Please check your input or link.");
       return;
     }
 
-    const trackingLink = offer.tracking_link
+    const finalUrl = offer.tracking_link
       .replace('{user}', encodeURIComponent(userUpi))
       .replace('{refer}', encodeURIComponent(referUpi));
 
-    // Redirect to the final tracking URL
-    window.location.href = trackingLink;
+    window.location.href = finalUrl;
   }
 
-  // Initialize
-  loadOfferDetails();
-  loadReferUpi();
+if (!referUpi) {
+  document.querySelector('.submit-btn').disabled = true;
+  document.querySelector('.submit-btn').textContent = 'Invalid Refer ID';
+}
+
+  loadPage();
 </script>
 
 </body>
