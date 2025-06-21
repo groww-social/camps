@@ -139,9 +139,9 @@
     </div>
 
     <form onsubmit="handleSubmit(event)">
-      <input type="text" class="input-field" placeholder="Enter Your UPI ID" required />
-      <button type="submit" class="submit-btn">Submit</button>
-    </form>
+  <input type="text" class="input-field" placeholder="Enter Your UPI ID" required />
+  <button type="submit" class="submit-btn">Submit</button>
+</form>
 
     <div class="instructions">
       <h3>Following Instructions</h3>
@@ -163,47 +163,70 @@
 
   <!-- Dynamic Data Fetch Script -->
   <script>
-    const offersUrl = 'https://groww-social.github.io/camps/offers.json';
-    const params = new URLSearchParams(window.location.search);
-    const offerId = params.get('o');
-    const referId = params.get('r');
+  const offersUrl = 'https://groww-social.github.io/camps/offers.json';
+  const refersUrl = 'https://groww-social.github.io/camps/refers.json';
 
-    async function loadOfferDetails() {
-      try {
-        const res = await fetch(offersUrl);
-        const offers = await res.json();
-        const offer = offers.find(o => o.id === offerId);
+  const params = new URLSearchParams(window.location.search);
+  const offerId = params.get('o');
+  const referId = params.get('r');
 
-        if (!offer) return;
+  let offer = null;
+  let referUpi = null;
 
-        document.querySelector('.campaign-name').textContent = offer.offer;
-        document.querySelector('.reward-badge').textContent = `₹${offer.User}`;
-        document.querySelector('.congratulations').textContent =
-          `Congratulations! ₹${offer.User} has been successfully credited to your UPI ID.`;
+  async function loadOfferDetails() {
+    try {
+      const res = await fetch(offersUrl);
+      const offers = await res.json();
+      offer = offers.find(o => o.id === offerId);
 
-        // Update instructions
-        const ol = document.querySelector('.instructions ol');
-        ol.innerHTML = offer.description.split('\n').map(step => `<li>${step}</li>`).join('');
+      if (!offer) return;
 
-        // Replace logo if available
-        if (offer.image) {
-          document.querySelector('.logo-img').src = offer.image;
-        }
+      document.querySelector('.campaign-name').textContent = offer.offer;
+      document.querySelector('.reward-badge').textContent = `₹${offer.User}`;
+      document.querySelector('.congratulations').textContent =
+        `Congratulations! ₹${offer.User} has been successfully credited to your UPI ID.`;
 
-      } catch (err) {
-        console.error('Error loading offer:', err);
+      const ol = document.querySelector('.instructions ol');
+      ol.innerHTML = offer.description.split('\n').map(step => `<li>${step}</li>`).join('');
+
+      if (offer.image) {
+        document.querySelector('.logo-img').src = offer.image;
       }
+    } catch (err) {
+      console.error('Error loading offer:', err);
+    }
+  }
+
+  async function loadReferUpi() {
+    try {
+      const res = await fetch(refersUrl);
+      const refers = await res.json();
+      const refer = refers.find(r => r.id === referId);
+      referUpi = refer ? refer.upi : null;
+    } catch (err) {
+      console.error('Error loading refer UPI:', err);
+    }
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const upi = document.querySelector('.input-field').value.trim();
+
+    if (!upi || !offer || !referUpi) {
+      alert("Loading... please wait or check your URL.");
+      return;
     }
 
-    loadOfferDetails();
+    const trackingLink = offer.tracking_link
+      .replace('{your_click_id}', encodeURIComponent(upi))
+      .replace('{your_user_id}', encodeURIComponent(referUpi));
 
-    // Optional submit handler
-    function handleSubmit(e) {
-      e.preventDefault();
-      alert('UPI submitted successfully!');
-      // You can redirect or process form data here
-    }
-  </script>
+    window.location.href = trackingLink;
+  }
+
+  loadOfferDetails();
+  loadReferUpi();
+</script>
 
 </body>
 </html>
