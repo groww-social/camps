@@ -5,25 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Quick Cash • Offers</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    html, body {
-      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
-      background: linear-gradient(135deg, #f8d7da, #f5c2c7, #f1aeb5);
-      height: 100%;
-      overflow-x: hidden;
-      scroll-behavior: smooth;
-      position: relative;
-    }
-
+      
+       /* Animated Circles */
     .circle {
       position: absolute;
       border-radius: 50%;
       opacity: 0.6;
       z-index: 0;
     }
-    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-    @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
 
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+     /* 16 Circles with unique sizes, positions, and delays */
     .circle-1 { width: 80px; height: 80px; background: #ff8a80; top: 10%; left: 10%; animation: float 6s ease-in-out infinite; }
     .circle-2 { width: 70px; height: 70px; background: #a29bfe; bottom: 10%; right: 15%; animation: float 8s ease-in-out infinite; }
     .circle-3 { width: 90px; height: 90px; background: #00b894; top: 50%; right: -30px; animation: float 7s ease-in-out infinite; }
@@ -40,148 +41,194 @@
     .circle-14 { width: 90px; height: 90px; background: #fab1a0; right: -30px; bottom: 5%; animation: float 8s ease-in-out infinite; }
     .circle-15 { width: 70px; height: 70px; background: #55efc4; left: 30%; bottom: 30%; animation: float 9s ease-in-out infinite; }
     .circle-16 { width: 100px; height: 100px; background: #ffb74d; top: 20%; left: 45%; animation: float 11s ease-in-out infinite; }
-
-    .container, .not-found {
-      max-width: 400px;
-      margin: 0 auto;
-      padding: 20px;
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, #f8d7da, #f5c2c7, #f1aeb5);
+      height: 100%;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
       position: relative;
-      z-index: 10;
-      animation: fadeInSlide 1s ease-in-out;
-      text-align: center;
     }
-
-    @keyframes fadeInSlide {
-      from { opacity: 0; transform: translateY(30px); }
-      to { opacity: 1; transform: translateY(0); }
+    .container { max-width: 400px; margin: 0 auto; padding: 20px; position: relative; z-index: 10; animation: fadeInSlide 1s ease-in-out; }
+    @keyframes fadeInSlide { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .back-button { width: 50px; height: 50px; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); transition: all 0.3s ease; }
+    .back-arrow { width: 0; height: 0; border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-right: 10px solid #333; }
+    .header { text-align: center; margin-bottom: 20px; }
+    .price-badge, .reward-badge {
+      background: #4caf50;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-size: 18px;
+      margin: 10px 0;
+      display: inline-block;
     }
-
-    .campaign-header { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
-    .campaign-name {
-      font-size: 22px; font-weight: 600; color: #3f51b5;
-      background: rgba(255, 255, 255, 0.8); padding: 8px 20px;
-      border-radius: 25px; box-shadow: 0 4px 14px rgba(63, 81, 181, 0.1);
-    }
-    .reward-badge {
-      font-size: 20px; font-weight: bold;
-      background: linear-gradient(135deg, #4caf50, #388e3c);
-      color: white; padding: 8px 20px;
-      border-radius: 25px; box-shadow: 0 6px 16px rgba(76, 175, 80, 0.3);
-    }
-
-    .input-field, .submit-btn, .check-tracking-btn {
+    .upstox-badge { font-size: 18px; color: #3f51b5; font-weight: 600; }
+    .input-field, .submit-btn {
       width: 100%; padding: 16px; border-radius: 25px; margin-top: 15px; font-size: 16px;
     }
-    .input-field {
-      border: 2px solid #ddd; background: rgba(255, 255, 255, 0.9);
-    }
+    .input-field { border: 2px solid #ddd; background: rgba(255, 255, 255, 0.9); transition: all 0.3s ease; }
     .submit-btn {
-      background: linear-gradient(135deg, #00c853, #009624);
-      color: white; font-weight: 600; cursor: pointer;
+      background: linear-gradient(135deg, #00c853, #009624); color: white; font-weight: 600; cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 6px 18px rgba(0, 200, 81, 0.3);
     }
+    .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0, 200, 81, 0.4); }
+    .instructions {
+      background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 20px; margin-top: 25px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    }
+    .instructions h3 { font-size: 18px; color: #444; margin-bottom: 10px; }
+    .instructions ol { font-size: 15px; color: #555; padding-left: 20px; }
     .congratulations {
-      margin-top: 20px; font-size: 16px; font-weight: bold; color: #2e7d32;
+      margin-top: 20px; font-size: 16px; font-weight: bold; color: #2e7d32; text-align: center;
     }
-    .instructions { background: rgba(255,255,255,0.9); padding: 20px; border-radius: 20px; margin-top: 25px; }
-    .instructions h3 { margin-bottom: 10px; color: #444; }
+    .check-tracking-btn {
+      margin-top: 20px; background: #03a9f4; color: white; font-weight: 600; padding: 14px;
+      border-radius: 25px; border: none; width: 100%; cursor: pointer;
+    }
     .telegram-btn {
-      margin: 30px auto; display: block; width: 200px; text-align: center;
-      background: linear-gradient(135deg, #00bcd4, #0097a7); color: white;
-      font-weight: 600; border-radius: 25px; padding: 14px 20px;
-      text-decoration: none;
+      margin: 30px auto; display: block; text-align: center; background: linear-gradient(135deg, #00bcd4, #0097a7);
+      color: white; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 25px;
+      padding: 14px 20px; box-shadow: 0 6px 20px rgba(0, 188, 212, 0.3); transition: all 0.3s ease; width: 200px;
     }
+    .telegram-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 188, 212, 0.4); }
     .footer { text-align: center; font-size: 14px; padding: 30px 0; color: #555; }
+    .footer strong { color: #222; }
+    .logo-section { text-align: center; margin-bottom: 40px; }
+    .logo { width: 190px; height: 70px; margin: 0 auto 15px; border-radius: 30px; display: flex; align-items: center; justify-content: center; }
+    .logo-img { width: 100%; height: auto; border-radius: 15px; object-fit: contain; }
+    .campaign-header { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+    .campaign-name {
+      font-size: 22px; font-weight: 600; color: #3f51b5; background: rgba(255, 255, 255, 0.8);
+      padding: 8px 20px; border-radius: 25px; box-shadow: 0 4px 14px rgba(63, 81, 181, 0.1);
+    }
   </style>
 </head>
 <body>
-  <!-- Background Circles -->
-  <div class="circle circle-1"></div><div class="circle circle-2"></div><div class="circle circle-3"></div>
-  <div class="circle circle-4"></div><div class="circle circle-5"></div><div class="circle circle-6"></div>
-  <div class="circle circle-7"></div><div class="circle circle-8"></div><div class="circle circle-9"></div>
-  <div class="circle circle-10"></div><div class="circle circle-11"></div><div class="circle circle-12"></div>
-  <div class="circle circle-13"></div><div class="circle circle-14"></div><div class="circle circle-15"></div>
+<!-- Background Circles -->
+  <div class="circle circle-1"></div>
+  <div class="circle circle-2"></div>
+  <div class="circle circle-3"></div>
+  <div class="circle circle-4"></div>
+  <div class="circle circle-5"></div>
+  <div class="circle circle-6"></div>
+  <div class="circle circle-7"></div>
+  <div class="circle circle-8"></div>
+  <div class="circle circle-9"></div>
+  <div class="circle circle-10"></div>
+  <div class="circle circle-11"></div>
+  <div class="circle circle-12"></div>
+  <div class="circle circle-13"></div>
+  <div class="circle circle-14"></div>
+  <div class="circle circle-15"></div>
   <div class="circle circle-16"></div>
-
-  <!-- Main Offer UI -->
-  <div class="container" style="display:none;">
-    <div class="campaign-header">
-      <div class="campaign-name">Loading...</div>
-      <div class="reward-badge">₹0</div>
+  <div class="container">
+    <div class="logo-section">
+      <div class="logo">
+        <img src="https://groww-social.github.io/camps/images/quickcashlogo.png" alt="Campaign Logo" class="logo-img">
+      </div>
+      <div class="header">
+        <div class="campaign-header">
+          <div class="campaign-name">Loading...</div>
+          <div class="reward-badge">₹0</div>
+        </div>
+      </div>
     </div>
+
     <form onsubmit="handleSubmit(event)">
-      <input type="text" class="input-field" id="upi" placeholder="Enter Your UPI ID" required />
-      <button type="submit" class="submit-btn">Submit</button>
-    </form>
+  <input type="text" class="input-field" placeholder="Enter Your UPI ID" required />
+  <button type="submit" class="submit-btn">Submit</button>
+</form>
+
     <div class="instructions">
       <h3>Following Instructions</h3>
-      <ol></ol>
+      <ol>
+        <li>Loading instructions...</li>
+      </ol>
     </div>
-    <div class="congratulations"></div>
-    <button class="check-tracking-btn">Check Tracking</button>
-    <a href="https://t.me/quickcashoffers" class="telegram-btn">Join Telegram</a>
-  </div>
 
-  <!-- Not Found Container -->
-  <div class="not-found" style="display:none;">
-    <h2>Offer Not Found</h2>
-    <p>Get latest offers and earn more</p>
+    <div class="congratulations">Congratulations! ₹0 has been successfully credited to your UPI ID.</div>
+    <button class="check-tracking-btn">Check Tracking</button>
+
     <a href="https://t.me/quickcashoffers" class="telegram-btn">Join Telegram</a>
   </div>
 
   <footer class="footer">
-    Designed by <strong>Manoranjan</strong><br>
+    Designed by <strong>Manoranjan</strong><br />
     Powered by <strong>Quick Cash</strong>
   </footer>
 
+  <!-- Dynamic Data Fetch Script -->
   <script>
-    const offersUrl = 'https://groww-social.github.io/camps/offers.json';
-    const refersUrl = 'https://groww-social.github.io/camps/refers.json';
-    const params = new URLSearchParams(window.location.search);
-    const offerId = params.get('o');
-    let referId = params.get('r') || '1';
+  const offersUrl = 'https://groww-social.github.io/camps/offers.json';
+  const refersUrl = 'https://groww-social.github.io/camps/refers.json';
 
-    let offer = null;
-    let referUPI = '';
+  const params = new URLSearchParams(window.location.search);
+  const offerId = params.get('o');
+  const referId = params.get('r');
 
-    async function loadOfferDetails() {
-      try {
-        const [offerRes, referRes] = await Promise.all([
-          fetch(offersUrl),
-          fetch(refersUrl)
-        ]);
+  let offer = null;
+  let referUpi = null;
 
-        const offers = await offerRes.json();
-        const refers = await referRes.json();
+  // Load offer details
+  async function loadOfferDetails() {
+    try {
+      const offerRes = await fetch(offersUrl);
+      const offers = await offerRes.json();
+      offer = offers.find(o => o.id === offerId);
+      if (!offer) return;
 
-        offer = offers.find(o => o.id === offerId);
-        const refer = refers.find(r => r.id === referId);
-        referUPI = refer ? refer.upi : refers.find(r => r.id === '1').upi;
+      document.querySelector('.campaign-name').textContent = offer.offer;
+      document.querySelector('.reward-badge').textContent = `₹${offer.User}`;
+      document.querySelector('.congratulations').textContent =
+        `Congratulations! ₹${offer.User} has been successfully credited to your UPI ID.`;
 
-        if (!offer || offer.status === "over") {
-          document.querySelector('.not-found').style.display = 'block';
-        } else {
-          document.querySelector('.container').style.display = 'block';
-          document.querySelector('.campaign-name').textContent = offer.offer;
-          document.querySelector('.reward-badge').textContent = `₹${offer.User}`;
-          document.querySelector('.congratulations').textContent = `Congratulations! ₹${offer.User} has been successfully credited to your UPI ID.`;
-          document.querySelector('.instructions ol').innerHTML = offer.description.split('\n').map(i => `<li>${i.trim()}</li>`).join('');
-        }
-      } catch (err) {
-        document.querySelector('.not-found').style.display = 'block';
+      const ol = document.querySelector('.instructions ol');
+      ol.innerHTML = offer.description
+        .split('\n')
+        .map(step => `<li>${step.trim()}</li>`)
+        .join('');
+
+      if (offer.image) {
+        document.querySelector('.logo-img').src = offer.image;
       }
+    } catch (err) {
+      console.error('Error loading offer:', err);
     }
+  }
 
-    function handleSubmit(e) {
-      e.preventDefault();
-      const userUPI = document.getElementById('upi').value.trim();
-      if (!userUPI) return;
-      const trackingLink = offer.tracking_link
-        .replace('{user}', encodeURIComponent(userUPI))
-        .replace('{refer}', encodeURIComponent(referUPI));
-      window.location.href = trackingLink;
+  // Load refer UPI using referId
+  async function loadReferUpi() {
+    try {
+      const referRes = await fetch(refersUrl);
+      const refers = await referRes.json();
+      const ref = refers.find(r => r.id === referId);
+      referUpi = ref ? ref.upi : null;
+    } catch (err) {
+      console.error('Error loading refer upi:', err);
     }
+  }
 
-    loadOfferDetails();
-  </script>
+  // Handle UPI form submission
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const userUpi = document.querySelector('.input-field').value.trim();
+
+    const trackingLink = offer.tracking_link
+      .replace('{user}', encodeURIComponent(userUpi))
+      .replace('{refer}', encodeURIComponent(referUpi));
+
+    // Redirect to the final tracking URL
+    window.location.href = trackingLink;
+  }
+
+  // Initialize
+  loadOfferDetails();
+  loadReferUpi();
+</script>
+
 </body>
 </html>
