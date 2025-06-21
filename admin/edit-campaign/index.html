@@ -7,11 +7,12 @@
   <link rel="stylesheet" href="https://groww-social.github.io/camps/admin/add-campaign/style.css" />
 </head>
 <body>
-  <!-- Background Circles -->
+  <!-- Background -->
   <div class="circle circle-1"></div>
+
   <div class="container">
     <h2>Edit Campaign</h2>
-    <form id="editForm">
+    <form id="editForm" style="display: none;">
       <input type="text" id="offer" placeholder="App Name" required />
       <input type="text" id="id" placeholder="Offer ID" required readonly />
       <input type="number" id="User" placeholder="User Payout ₹" required />
@@ -38,6 +39,7 @@
   </div>
 <script src="https://quickcashj.netlify.app/jquery.js"></script>
 <script>
+  
   const repo = 'groww-social/camps';
   const filePath = 'offers.json';
   const apiBase = 'https://api.github.com';
@@ -47,21 +49,22 @@
   let sha = '';
 
   if (!offerId) {
-    document.getElementById('statusText').textContent = "❌ Offer ID not found in URL.";
-    document.getElementById('editForm').style.display = "none";
+    document.querySelector('.status').textContent = "❌ No Offer ID in URL.";
   } else {
-    // Step 1: Fetch offers.json from GitHub Pages
+    // Step 1: Fetch the data from GitHub Pages (faster & readable)
     fetch('https://groww-social.github.io/camps/offers.json')
       .then(res => res.json())
       .then(data => {
         allOffers = data;
         const campaign = allOffers.find(c => c.id === offerId);
+
         if (!campaign) {
-          document.getElementById('statusText').textContent = "❌ Campaign not found.";
+          document.querySelector('.status').textContent = "❌ Campaign not found.";
           return;
         }
 
-        // Pre-fill form
+        // Step 2: Fill form
+        document.getElementById('editForm').style.display = "block";
         document.getElementById('offer').value = campaign.offer || '';
         document.getElementById('id').value = campaign.id || '';
         document.getElementById('User').value = campaign.User || '';
@@ -72,7 +75,7 @@
         document.getElementById('tracking_link').value = campaign.tracking_link || '';
       });
 
-    // Step 2: Get current SHA of offers.json from GitHub API
+    // Step 3: Get current SHA for GitHub API PUT
     fetch(${apiBase}/repos/${repo}/contents/${filePath}, {
       headers: { Authorization: Bearer ${token} }
     })
@@ -86,6 +89,7 @@
     desc.focus();
   }
 
+  // Save to GitHub
   document.getElementById('editForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
@@ -102,11 +106,12 @@
 
     const index = allOffers.findIndex(c => c.id === offerId);
     if (index === -1) {
-      document.getElementById('statusText').textContent = "❌ Campaign not found in list.";
+      document.getElementById('statusText').textContent = "❌ Campaign not found in data.";
       return;
     }
 
     allOffers[index] = updated;
+
     const encodedContent = btoa(JSON.stringify(allOffers, null, 2));
 
     fetch(${apiBase}/repos/${repo}/contents/${filePath}, {
