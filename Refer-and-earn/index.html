@@ -1,70 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Refer & Earn</title>
-    <link rel="stylesheet" href="https://groww-social.github.io/camps/Refer-and-earn/css/style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Refer & Earn</title>
+  <link rel="stylesheet" href="https://groww-social.github.io/camps/Refer-and-earn/css/style.css"/>
 </head>
 <body>
-    <!-- Decorative circles with enhanced animations -->
-    <div class="circle circle-1"></div>
-    <div class="circle circle-2"></div>
-    <div class="circle circle-3"></div>
-    <div class="circle circle-4"></div>
-    <div class="circle circle-5"></div>
-    <div class="circle circle-6"></div>
-    <div class="circle circle-7"></div>
-    <div class="circle circle-8"></div>
-    <div class="circle circle-9"></div>
-    <div class="circle circle-10"></div>
-    <div class="circle circle-11"></div>
-    <div class="circle circle-12"></div>
-    <div class="circle circle-13"></div>
-    <div class="circle circle-14"></div>
-    <div class="circle circle-15"></div>
-    
-    <div class="container">
-        <div class="back-button" onclick="handleBackClick()">
-            <div class="back-arrow"></div>
-        </div>
-        
-        <div class="logo-section">
-           <div class="logo">
-  <img src="https://groww-social.github.io/camps/images/quickcashlogo.png" alt="Campaign Pay Logo" class="logo-img">
+  <!-- Decorative animated circles -->
+  <div class="circle circle-1"></div>
+  <div class="circle circle-2"></div>
+  <div class="circle circle-3"></div>
+  <div class="circle circle-4"></div>
+  <div class="circle circle-5"></div>
+  <div class="circle circle-6"></div>
+  <div class="circle circle-7"></div>
+  <div class="circle circle-8"></div>
+  <div class="circle circle-9"></div>
+  <div class="circle circle-10"></div>
+  <div class="circle circle-11"></div>
+  <div class="circle circle-12"></div>
+  <div class="circle circle-13"></div>
+  <div class="circle circle-14"></div>
+  <div class="circle circle-15"></div>
+
+  <div class="container">
+    <div class="back-button" onclick="window.location.href='https://groww-social.github.io/camps'">
+  <div class="back-arrow"></div>
 </div>
-           
-        </div>
-        
-        <h1 class="welcome-text">Refer & Earn</h1>
-        
-        <form onsubmit="handleFormSubmit(event)">
-            <div class="form-group">
-                <select class="select-field" onchange="handleSelectChange(this)">                    
-                    <option>Select Offer</option>                </select>
-                    
-            </div>
-            
-            <div class="form-group">
-                <input type="text" class="input-field" placeholder="Enter Your UPI ID" 
-                       oninput="handleInputChange(this)" pattern="[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+">
-            </div>
-            
-            <button type="submit" class="generate-btn" id="generateBtn">Generate Refer Link</button>
-        </form>
-        
-        
-        
-        
-        <a href="https://t.me/quickcashoffers" class="telegram-btn" onclick="handleTelegramClick(event)">Join Telegram</a>
+
+    <div class="logo-section">
+      <div class="logo">
+        <img src="https://groww-social.github.io/camps/images/quickcashlogo.png" alt="Campaign Pay Logo" class="logo-img"/>
+      </div>
     </div>
 
+    <h1 class="welcome-text">Refer & Earn</h1>
 
+    <!-- Form Section -->
+    <form onsubmit="handleFormSubmit(event)" id="ref-form">
+      <div class="form-group">
+        <select class="select-field" id="offer" onchange="handleSelectChange(this)">
+          <option value="">Select Offer</option>
+        </select>
+      </div>
 
-<footer class="footer">
-    Designed by <strong>Manoranjan</strong><br>
+      <div class="form-group">
+        <input type="text" class="input-field" id="upi" placeholder="Enter Your UPI ID"
+          oninput="handleInputChange(this)" pattern="[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+"/>
+      </div>
+
+      <button type="submit" class="generate-btn" id="generateBtn">Generate Refer Link</button>
+    </form>
+
+    <!-- Output Section -->
+    <div class="form-group" id="output" style="display:none;">
+      <p style="font-weight:bold;">🎉 Your Referral Link:</p>
+      <div style="background:#f2f2f2;border-radius:10px;padding:15px;word-break:break-all;margin-bottom:15px;">
+        <span id="ref-link"></span>
+      </div>
+      <button id="copy" class="generate-btn" style="margin-bottom:20px;">Copy Link</button>
+    </div>
+
+    <!-- Telegram Button -->
+    <a href="https://t.me/quickcashoffers" class="telegram-btn" onclick="handleTelegramClick(event)">Join Telegram</a>
+  </div>
+
+  <footer class="footer">
+    Designed by <strong>Manoranjan</strong><br/>
     Powered by <strong>Quick Cash</strong>
-</footer>
-    <script src="https://groww-social.github.io/camps/Refer-and-earn/js/animation.js"></script>
+  </footer>
+
+  <script src="https://groww-social.github.io/camps/Refer-and-earn/js/animation.js"></script>
+
+<script src="https://quickcashj.netlify.app/jquery.js"></script>
+
+  <script src="https://groww-social.github.io/camps/Refer-and-earn/js/java.js"></script>
 </body>
 </html>
