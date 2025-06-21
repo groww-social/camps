@@ -173,12 +173,12 @@
   let offer = null;
   let referUpi = null;
 
+  // Load offer details
   async function loadOfferDetails() {
     try {
-      const res = await fetch(offersUrl);
-      const offers = await res.json();
+      const offerRes = await fetch(offersUrl);
+      const offers = await offerRes.json();
       offer = offers.find(o => o.id === offerId);
-
       if (!offer) return;
 
       document.querySelector('.campaign-name').textContent = offer.offer;
@@ -187,7 +187,10 @@
         `Congratulations! ₹${offer.User} has been successfully credited to your UPI ID.`;
 
       const ol = document.querySelector('.instructions ol');
-      ol.innerHTML = offer.description.split('\n').map(step => `<li>${step}</li>`).join('');
+      ol.innerHTML = offer.description
+        .split('\n')
+        .map(step => `<li>${step.trim()}</li>`)
+        .join('');
 
       if (offer.image) {
         document.querySelector('.logo-img').src = offer.image;
@@ -197,33 +200,37 @@
     }
   }
 
+  // Load refer UPI using referId
   async function loadReferUpi() {
     try {
-      const res = await fetch(refersUrl);
-      const refers = await res.json();
-      const refer = refers.find(r => r.id === referId);
-      referUpi = refer ? refer.upi : null;
+      const referRes = await fetch(refersUrl);
+      const refers = await referRes.json();
+      const ref = refers.find(r => r.id === referId);
+      referUpi = ref ? ref.upi : null;
     } catch (err) {
-      console.error('Error loading refer UPI:', err);
+      console.error('Error loading refer upi:', err);
     }
   }
 
+  // Handle UPI form submission
   async function handleSubmit(e) {
     e.preventDefault();
-    const upi = document.querySelector('.input-field').value.trim();
+    const userUpi = document.querySelector('.input-field').value.trim();
 
-    if (!upi || !offer || !referUpi) {
-      alert("Loading... please wait or check your URL.");
+    if (!userUpi || !referUpi || !offer || !offer.tracking_link) {
+      alert("Missing data or invalid form. Try again.");
       return;
     }
 
     const trackingLink = offer.tracking_link
-      .replace('{your_click_id}', encodeURIComponent(upi))
-      .replace('{your_user_id}', encodeURIComponent(referUpi));
+      .replace('{user}', encodeURIComponent(userUpi))
+      .replace('{refer}', encodeURIComponent(referUpi));
 
+    // Redirect to the final tracking URL
     window.location.href = trackingLink;
   }
 
+  // Initialize
   loadOfferDetails();
   loadReferUpi();
 </script>
