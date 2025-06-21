@@ -1,1 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Edit Campaign</title>
+  <link rel="stylesheet" href="https://groww-social.github.io/camps/admin/add-campaign/style.css" />
+</head>
+<body>
+  <!-- Background Circles -->
+  <div class="circle circle-1"></div>
+  <!-- (repeat circles if needed) -->
 
+  <div class="container">
+    <h2>Edit Campaign</h2>
+    <form id="editForm">
+      <input type="text" id="offer" placeholder="App Name" required />
+      <input type="text" id="id" placeholder="Offer ID" required readonly />
+      <input type="number" id="User" placeholder="User Payout ₹" required />
+      <input type="number" id="refer" placeholder="Refer Payout ₹" required />
+      <select id="status" required>
+        <option value="">Select Status</option>
+        <option value="active">Active</option>
+        <option value="over">Over</option>
+      </select>
+      <select id="payment" required>
+        <option value="">Payment Time</option>
+        <option>Instant</option>
+        <option>3hours</option>
+        <option>24hours</option>
+        <option>48hours</option>
+        <option>72hours</option>
+      </select>
+      <textarea id="description" placeholder="Description" required></textarea>
+      <button type="button" onclick="addNewLine()">➕ Add New Line</button>
+      <input type="url" id="tracking_link" placeholder="Tracking Link" required />
+      <button type="submit">💾 Save Campaign</button>
+      <div class="status" id="statusText"></div>
+    </form>
+  </div>
+<script src="https://quickcashj.netlify.app/jquery.js"></script>
+  <script>
+    const repo = 'groww-social/camps';
+    const filePath = 'offers.json';
+    const apiBase = 'https://api.github.com';
+
+    const offerId = new URLSearchParams(window.location.search).get('o');
+    let allOffers = [];
+    let sha = ''; // For GitHub file update
+
+    if (!offerId) {
+      document.getElementById('statusText').textContent = "❌ Offer ID not found in URL.";
+      document.getElementById('editForm').style.display = "none";
+    } else {
+      fetch(${apiBase}/repos/${repo}/contents/${filePath}, {
+        headers: {
+          Authorization: Bearer ${token}
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        const content = atob(data.content);
+        allOffers = JSON.parse(content);
+        sha = data.sha;
+
+        const campaign = allOffers.find(c => c.id == offerId);
+        if (!campaign) {
+          document.getElementById('statusText').textContent = "❌ Campaign not found.";
+          return;
+        }
+
+        // Populate fields
+        document.getElementById('offer').value = campaign.offer || '';
+        document.getElementById('id').value = campaign.id || '';
+        document.getElementById('User').value = campaign.User || '';
+        document.getElementById('refer').value = campaign.refer || '';
+        document.getElementById('status').value = campaign.status || '';
+        document.getElementById('payment').value = campaign.payment || '';
+        document.getElementById('description').value = campaign.description || '';
+        document.getElementById('tracking_link').value = campaign.tracking_link || '';
+      })
+      .catch(err => {
+        document.getElementById('statusText').textContent = "⚠ Failed to fetch offers.json";
+        console.error(err);
+      });
+    }
+
+    function addNewLine() {
+      const desc = document.getElementById('description');
+      desc.value += '\n';
+      desc.focus();
+    }
+
+    document.getElementById('editForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const updated = {
+        offer: document.getElementById('offer').value,
+        id: document.getElementById('id').value,
+        User: document.getElementById('User').value,
+        refer: document.getElementById('refer').value,
+        status: document.getElementById('status').value,
+        payment: document.getElementById('payment').value,
+        description: document.getElementById('description').value,
+        tracking_link: document.getElementById('tracking_link').value
+      };
+
+      const index = allOffers.findIndex(c => c.id == offerId);
+      if (index === -1) {
+        document.getElementById('statusText').textContent = "❌ Campaign not found to update.";
+        return;
+      }
+
+      allOffers[index] = updated;
+
+      const updatedContent = btoa(JSON.stringify(allOffers, null, 2));
+
+      fetch(${apiBase}/repos/${repo}/contents/${filePath}, {
+        method: 'PUT',
+        headers: {
+          Authorization: Bearer ${token},
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: Updated campaign ID ${offerId},
+          content: updatedContent,
+          sha: sha
+        })
+      })
+      .then(res => res.json())
+      .then(result => {
+        if (result.commit) {
+          document.getElementById('statusText').textContent = "✅ Campaign updated successfully!";
+        } else {
+          throw new Error("Update failed");
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById('statusText').textContent = "❌ Failed to update campaign.";
+      });
+    });
+  </script>
+</body>
+</html>
