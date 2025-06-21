@@ -1,89 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Refer & Earn</title>
-  <style>
-    body { font-family: sans-serif; background: black; color: white; padding: 20px; }
-    select, input, button, .link-box { width:100%; padding:10px; margin:10px 0; border:none; border-radius:6px; }
-    button { background: #2ecc71; cursor: pointer; color: #fff; }
-    .link-box { background: #222; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refer & Earn</title>
+    <link rel="stylesheet" href="https://groww-social.github.io/camps/Refer-and-earn/css/style.css">
 </head>
 <body>
-  <h2>🔗 Create Your Referral Link</h2>
-  <select id="offer"><option value="">-- Select Offer --</option></select>
-  <input type="text" id="upi" placeholder="Enter your UPI ID" />
-  <button id="gen">Create Refer Link</button>
+    <!-- Decorative circles with enhanced animations -->
+    <div class="circle circle-1"></div>
+    <div class="circle circle-2"></div>
+    <div class="circle circle-3"></div>
+    <div class="circle circle-4"></div>
+    <div class="circle circle-5"></div>
+    <div class="circle circle-6"></div>
+    <div class="circle circle-7"></div>
+    <div class="circle circle-8"></div>
+    <div class="circle circle-9"></div>
+    <div class="circle circle-10"></div>
+    <div class="circle circle-11"></div>
+    <div class="circle circle-12"></div>
+    <div class="circle circle-13"></div>
+    <div class="circle circle-14"></div>
+    <div class="circle circle-15"></div>
+    
+    <div class="container">
+        <div class="back-button" onclick="handleBackClick()">
+            <div class="back-arrow"></div>
+        </div>
+        
+        <div class="logo-section">
+           <div class="logo">
+  <img src="https://groww-social.github.io/camps/images/quickcashlogo.png" alt="Campaign Pay Logo" class="logo-img">
+</div>
+           
+        </div>
+        
+        <h1 class="welcome-text">Refer & Earn</h1>
+        
+        <form onsubmit="handleFormSubmit(event)">
+            <div class="form-group">
+                <select class="select-field" onchange="handleSelectChange(this)">                    
+                    <option>Select Offer</option>                </select>
+                    
+            </div>
+            
+            <div class="form-group">
+                <input type="text" class="input-field" placeholder="Enter Your UPI ID" 
+                       oninput="handleInputChange(this)" pattern="[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+">
+            </div>
+            
+            <button type="submit" class="generate-btn" id="generateBtn">Generate Refer Link</button>
+        </form>
+        
+        
+        
+        
+        <a href="https://t.me/quickcashoffers" class="telegram-btn" onclick="handleTelegramClick(event)">Join Telegram</a>
+    </div>
 
-  <div class="link-box" id="output" style="display:none;">
-    <p>Your Link: <span id="ref-link"></span></p>
-    <button id="copy">Copy</button>
-  </div>
 
-  <script type="module">
-    const offersUrl = 'https://groww-social.github.io/camps/offers.json';
-    const refersApi = 'https://api.github.com/repos/groww-social/camps/contents/refers.json';
-    let offers = [];
 
-    function $(id){ return document.getElementById(id); }
-    async function getToken(){
-      const mod = await import('https://campjs.netlify.app/apis.js');
-      return mod.default;
-    }
-    function showLink(link){
-      $('ref-link').textContent = link;
-      $('output').style.display = 'block';
-    }
-    function copyLink(){
-      navigator.clipboard.writeText($('ref-link').textContent);
-      alert('Link Copied');
-    }
-
-    async function loadOffers(){
-      try {
-        const res = await fetch(offersUrl);
-        offers = await res.json();
-        offers.forEach((o,i)=>{
-          const opt = document.createElement('option');
-          opt.value = i;
-          opt.textContent = ${o.offer} (₹${o.refer});
-          $('offer').appendChild(opt);
-        });
-      } catch (e) {
-        alert("Failed to load offers.");
-        console.error(e);
-      }
-    }
-
-    async function saveRefer(upi, id){
-      const token = await getToken();
-      const res = await fetch(refersApi, { headers:{Authorization:Bearer ${token}} });
-      const { content, sha } = await res.json();
-      const arr = JSON.parse(atob(content));
-      arr.push({ upi, id });
-      await fetch(refersApi, {
-        method:'PUT',
-        headers:{ Authorization:Bearer ${token},"Content-Type":"application/json" },
-        body: JSON.stringify({ message:'new', content:btoa(JSON.stringify(arr)), sha })
-      });
-    }
-
-    $('gen').onclick = async function(){
-      const oi = $('offer').value, upi = $('upi').value.trim();
-      if(!oi){ return alert('Select offer'); }
-      if(!upi.includes('@')){ return alert('Enter valid UPI'); }
-
-      const offer = offers[oi];
-      const newRef = Date.now().toString().slice(-6); // unique ID
-      const link = https://groww-social.github.io/camps/?id=${offer.id}&ref=${newRef};
-      showLink(link);
-      saveRefer(upi, newRef);
-    }
-    $('copy').onclick = copyLink;
-
-    loadOffers();
-  </script>
+<footer class="footer">
+    Designed by <strong>Manoranjan</strong><br>
+    Powered by <strong>Quick Cash</strong>
+</footer>
+    <script src="https://groww-social.github.io/camps/Refer-and-earn/js/animation.js"></script>
 </body>
 </html>
