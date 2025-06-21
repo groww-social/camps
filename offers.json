@@ -4,8 +4,19 @@
     "id":"491",
     "User": "10",
     "refer": "15",
-    "description": "1. Enter your Upi And Click Submit.\n Redirect to App\n Link Your Bank Account\n Send Any Amount to Any Other UPI\n Done! You will get Rs.10 Instant.",
+    "description": "Enter your Upi And Click Submit.\n Redirect to App\n Link Your Bank Account\n Send Any Amount to Any Other UPI\n Done! You will get Rs.10 Instant.",
     "tracking_link": "https://link.hiqmobi.com/go/451/1255?p1={user}&p2={refer}&p3=10&p4=15",
-    "status":"active"
+    "status":"over",
+    "payment":"instant"
+  },
+  {
+    "offer": "Upstock",
+    "id":"28",
+    "User": "100",
+    "refer": "150",
+    "description": "Enter Upi id, Click Submit & Redirect towards partner Website.\n Now Register Using New Number.\n Open Account Using Adhaar & Pan No. and Wait for Approval",
+    "tracking_link": "https://link.hiqmobi.com/go/28/1255?p1={user}&p2={refer}&p3=100&p4=150",
+    "status":"active",
+    "payment":"instant"
   }
 ]
