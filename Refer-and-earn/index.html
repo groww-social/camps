@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Refer Link Creator</title>
+  <title>Refer & Earn</title>
   <style>
     body { font-family: sans-serif; background: #111; padding: 20px; color: #fff; }
     select, input, button, .link-box { width:100%; padding:10px; margin:10px 0; border:none; border-radius:6px; }
@@ -32,10 +32,12 @@
 
   <script type="module">
     const offerSelect = document.getElementById("offer");
+    let offersList = [];
 
     async function loadOffers() {
       const res = await fetch("https://groww-social.github.io/camps/offers.json");
       const offers = await res.json();
+      offersList = offers;
       offers.forEach((o, idx) => {
         const option = document.createElement("option");
         option.value = idx;
@@ -81,21 +83,21 @@
       if (offerIndex === "") return alert("Please select an offer.");
       if (!upi) return alert("Please enter a valid UPI ID.");
 
-      const offers = await (await fetch("https://groww-social.github.io/camps/offers.json")).json();
-      const offer = offers[parseInt(offerIndex)];
+      const offer = offersList[offerIndex];
+      const offerId = offer.id;
 
       const token = await getToken();
       const { refers, sha } = await loadRefers(token);
       const newId = refers.length + 1;
 
-      // Show link instantly
-      const link = https://yourdomain.in/c/?id=${offerIndex}&ref=${newId};
+      // Show correct link immediately
+      const link = https://groww-social.github.io/camps/?id=${offerId}&ref=${newId};
       document.getElementById("ref-link").textContent = link;
       document.getElementById("output").style.display = "block";
 
-      // Save to GitHub in background
+      // Save to GitHub (non-blocking)
       refers.push({ upi, id: newId.toString() });
-      saveRefersAsync(refers, sha, token); // non-blocking
+      saveRefersAsync(refers, sha, token);
     }
 
     function copyLink() {
