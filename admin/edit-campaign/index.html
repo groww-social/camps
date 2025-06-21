@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>Edit Campaign</title>
   <style>
     .hidden { display: none; }
@@ -28,11 +28,11 @@
     <label>Payment:
       <select id="payment">
         <option value="">--</option>
-        <option value="Instant">Instant</option>
-        <option value="3hours">3hours</option>
-        <option value="24hours">24hours</option>
-        <option value="48hours">48hours</option>
-        <option value="72hours">72hours</option>
+        <option>Instant</option>
+        <option>3hours</option>
+        <option>24hours</option>
+        <option>48hours</option>
+        <option>72hours</option>
       </select>
     </label><br/>
     <label>Description:<br/>
@@ -49,53 +49,58 @@
   const form = document.getElementById('editForm');
   const params = new URLSearchParams(location.search);
   const offerId = params.get('o');
+
   console.log('URL param o=', offerId);
+
   if (!offerId) {
     statusText.textContent = '❌ No ?o=... in URL. You must use ?o=28 etc.';
   } else {
     statusText.textContent = '🔍 Fetching offers.json…';
-    fetch('https://groww-social.github.io/camps/offers.json').then(res=>{
-      console.log('offers.json status', res.status);
-      return res.json();
-    }).then(data => {
-      console.log('offers.json data', data);
-      if (!Array.isArray(data)) {
-        statusText.textContent = '❌ offers.json didn\'t return an array.';
-        return;
-      }
-      const campaign = data.find(c=>c.id === offerId || c.id === Number(offerId));
-      console.log('matched campaign', campaign);
-      if (!campaign) {
-        statusText.textContent = ❌ No campaign with id = ${offerId};
-        return;
-      }
+    fetch('https://groww-social.github.io/camps/offers.json')
+      .then(res => {
+        console.log('offers.json status', res.status);
+        return res.json();
+      })
+      .then(data => {
+        console.log('offers.json data', data);
+        if (!Array.isArray(data)) {
+          statusText.textContent = '❌ offers.json didn\'t return an array.';
+          return;
+        }
+        const campaign = data.find(c => c.id === offerId || c.id === Number(offerId));
+        console.log('matched campaign', campaign);
+        if (!campaign) {
+          statusText.textContent = ❌ No campaign with id = ${offerId};
+          return;
+        }
 
-      // Populate form
-      form.off("display", "");
-      form.classList.remove('hidden');
-      statusText.textContent = ✅ Editing campaign id=${offerId};
-      document.getElementById('offer').value = campaign.offer || '';
-      document.getElementById('id').value = campaign.id || '';
-      document.getElementById('User').value = campaign.User || '';
-      document.getElementById('refer').value = campaign.refer || '';
-      document.getElementById('status').value = campaign.status || '';
-      document.getElementById('payment').value = campaign.payment || '';
-      document.getElementById('description').value = campaign.description || '';
-      document.getElementById('tracking_link').value = campaign.tracking_link || '';
-    }).catch(err => {
-      console.error(err);
-      statusText.textContent = '❌ Error fetching or parsing offers.json (check console)';
-    });
+        // ✅ Populate form
+        form.classList.remove('hidden');
+        statusText.textContent = ✅ Editing campaign id=${offerId};
+        document.getElementById('offer').value = campaign.offer || '';
+        document.getElementById('id').value = campaign.id || '';
+        document.getElementById('User').value = campaign.User || '';
+        document.getElementById('refer').value = campaign.refer || '';
+        document.getElementById('status').value = campaign.status || '';
+        document.getElementById('payment').value = campaign.payment || '';
+        document.getElementById('description').value = campaign.description || '';
+        document.getElementById('tracking_link').value = campaign.tracking_link || '';
+      })
+      .catch(err => {
+        console.error(err);
+        statusText.textContent = '❌ Error fetching or parsing offers.json (check console)';
+      });
   }
 
   function addNewLine() {
-    document.getElementById('description').value += '\n';
-    document.getElementById('description').focus();
+    const desc = document.getElementById('description');
+    desc.value += '\n';
+    desc.focus();
   }
 
   form.addEventListener('submit', e => {
     e.preventDefault();
-    alert('Save functionality not wired yet—debug completed.');
+    alert('✅ Save feature will be enabled once debug complete!');
   });
 </script>
 </body>
