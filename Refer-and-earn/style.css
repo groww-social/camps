@@ -497,7 +497,7 @@
     animation: fadeInUp 0.6s ease 1.6s both;
           }
 .telegram-btn {
-    background-image: url('https://groww-social.github.io/camps/images/money.jpg');
+    background: #800080;
   background-size: cover;
   background-position: center;
 }
