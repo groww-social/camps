@@ -35,15 +35,21 @@
     let offersList = [];
 
     async function loadOffers() {
-      const res = await fetch("https://groww-social.github.io/camps/offers.json");
-      const offers = await res.json();
-      offersList = offers;
-      offers.forEach((o, idx) => {
-        const option = document.createElement("option");
-        option.value = idx;
-        option.textContent = ${o.offer} (₹${o.refer});
-        offerSelect.appendChild(option);
-      });
+      try {
+        const res = await fetch("https://groww-social.github.io/camps/offers.json");
+        const offers = await res.json();
+        offersList = offers;
+
+        offers.forEach((offer, idx) => {
+          const option = document.createElement("option");
+          option.value = idx;
+          option.textContent = ${offer.offer} (₹${offer.refer});
+          offerSelect.appendChild(option);
+        });
+      } catch (err) {
+        alert("⚠ Failed to load offers. Please check offers.json file.");
+        console.error(err);
+      }
     }
 
     async function getToken() {
@@ -60,7 +66,7 @@
       return { refers: JSON.parse(content), sha: json.sha };
     }
 
-    async function saveRefersAsync(refers, sha, token) {
+    async function saveRefers(refers, sha, token) {
       const content = btoa(JSON.stringify(refers, null, 2));
       await fetch("https://api.github.com/repos/groww-social/camps/contents/refers.json", {
         method: "PUT",
@@ -69,7 +75,7 @@
           "Content-Type": "application/json"
         },
         body: JSON.stringify({
-          message: "New refer added",
+          message: "Add new refer",
           content: content,
           sha: sha
         })
@@ -81,23 +87,21 @@
       const upi = document.getElementById("upi").value.trim();
 
       if (offerIndex === "") return alert("Please select an offer.");
-      if (!upi) return alert("Please enter a valid UPI ID.");
+      if (!upi || !upi.includes("@")) return alert("Enter a valid UPI ID.");
 
-      const offer = offersList[offerIndex];
-      const offerId = offer.id;
+      const selectedOffer = offersList[offerIndex];
+      const offerId = selectedOffer.id;
 
       const token = await getToken();
       const { refers, sha } = await loadRefers(token);
       const newId = refers.length + 1;
 
-      // Show correct link immediately
       const link = https://groww-social.github.io/camps/?id=${offerId}&ref=${newId};
       document.getElementById("ref-link").textContent = link;
       document.getElementById("output").style.display = "block";
 
-      // Save to GitHub (non-blocking)
       refers.push({ upi, id: newId.toString() });
-      saveRefersAsync(refers, sha, token);
+      saveRefers(refers, sha, token);
     }
 
     function copyLink() {
