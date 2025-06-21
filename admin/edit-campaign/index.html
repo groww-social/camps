@@ -1,143 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
   <title>Edit Campaign</title>
-  <link rel="stylesheet" href="https://groww-social.github.io/camps/admin/add-campaign/style.css" />
+  <style>
+    .hidden { display: none; }
+    .status { margin-top: 1em; color: #333; }
+  </style>
 </head>
 <body>
-  <!-- Background -->
-  <div class="circle circle-1"></div>
+  <h2>Edit Campaign</h2>
+  <div class="status" id="statusText">🔍 Loading…</div>
 
-  <div class="container">
-    <h2>Edit Campaign</h2>
-    <form id="editForm" style="display: none;">
-      <input type="text" id="offer" placeholder="App Name" required />
-      <input type="text" id="id" placeholder="Offer ID" required readonly />
-      <input type="number" id="User" placeholder="User Payout ₹" required />
-      <input type="number" id="refer" placeholder="Refer Payout ₹" required />
-      <select id="status" required>
-        <option value="">Select Status</option>
-        <option value="active">Active</option>
-        <option value="over">Over</option>
+  <form id="editForm" class="hidden">
+    <label>App Name: <input type="text" id="offer"/></label><br/>
+    <label>Offer ID: <input type="text" id="id" readonly/></label><br/>
+    <label>User Payout ₹: <input type="number" id="User"/></label><br/>
+    <label>Refer Payout ₹: <input type="number" id="refer"/></label><br/>
+    <label>Status:
+      <select id="status">
+        <option value="">--</option>
+        <option value="active">active</option>
+        <option value="over">over</option>
       </select>
-      <select id="payment" required>
-        <option value="">Payment Time</option>
-        <option>Instant</option>
-        <option>3hours</option>
-        <option>24hours</option>
-        <option>48hours</option>
-        <option>72hours</option>
+    </label><br/>
+    <label>Payment:
+      <select id="payment">
+        <option value="">--</option>
+        <option value="Instant">Instant</option>
+        <option value="3hours">3hours</option>
+        <option value="24hours">24hours</option>
+        <option value="48hours">48hours</option>
+        <option value="72hours">72hours</option>
       </select>
-      <textarea id="description" placeholder="Description" required></textarea>
-      <button type="button" onclick="addNewLine()">➕ Add New Line</button>
-      <input type="url" id="tracking_link" placeholder="Tracking Link" required />
-      <button type="submit">💾 Save Campaign</button>
-      <div class="status" id="statusText"></div>
-    </form>
-  </div>
-<script src="https://quickcashj.netlify.app/jquery.js"></script>
+    </label><br/>
+    <label>Description:<br/>
+      <textarea id="description" rows="4" cols="40"></textarea>
+    </label><button type="button" onclick="addNewLine()">Add line</button><br/>
+    <label>Tracking link:<br/>
+      <input type="url" id="tracking_link" style="width: 400px;"/>
+    </label><br/>
+    <button type="submit">Save</button>
+  </form>
+
 <script>
-  
-  const repo = 'groww-social/camps';
-  const filePath = 'offers.json';
-  const apiBase = 'https://api.github.com';
-
-  const offerId = new URLSearchParams(location.search).get('o');
-  let allOffers = [];
-  let sha = '';
-
+  const statusText = document.getElementById('statusText');
+  const form = document.getElementById('editForm');
+  const params = new URLSearchParams(location.search);
+  const offerId = params.get('o');
+  console.log('URL param o=', offerId);
   if (!offerId) {
-    document.querySelector('.status').textContent = "❌ No Offer ID in URL.";
+    statusText.textContent = '❌ No ?o=... in URL. You must use ?o=28 etc.';
   } else {
-    // Step 1: Fetch the data from GitHub Pages (faster & readable)
-    fetch('https://groww-social.github.io/camps/offers.json')
-      .then(res => res.json())
-      .then(data => {
-        allOffers = data;
-        const campaign = allOffers.find(c => c.id === offerId);
+    statusText.textContent = '🔍 Fetching offers.json…';
+    fetch('https://groww-social.github.io/camps/offers.json').then(res=>{
+      console.log('offers.json status', res.status);
+      return res.json();
+    }).then(data => {
+      console.log('offers.json data', data);
+      if (!Array.isArray(data)) {
+        statusText.textContent = '❌ offers.json didn\'t return an array.';
+        return;
+      }
+      const campaign = data.find(c=>c.id === offerId || c.id === Number(offerId));
+      console.log('matched campaign', campaign);
+      if (!campaign) {
+        statusText.textContent = ❌ No campaign with id = ${offerId};
+        return;
+      }
 
-        if (!campaign) {
-          document.querySelector('.status').textContent = "❌ Campaign not found.";
-          return;
-        }
-
-        // Step 2: Fill form
-        document.getElementById('editForm').style.display = "block";
-        document.getElementById('offer').value = campaign.offer || '';
-        document.getElementById('id').value = campaign.id || '';
-        document.getElementById('User').value = campaign.User || '';
-        document.getElementById('refer').value = campaign.refer || '';
-        document.getElementById('status').value = campaign.status || '';
-        document.getElementById('payment').value = campaign.payment || '';
-        document.getElementById('description').value = campaign.description || '';
-        document.getElementById('tracking_link').value = campaign.tracking_link || '';
-      });
-
-    // Step 3: Get current SHA for GitHub API PUT
-    fetch(${apiBase}/repos/${repo}/contents/${filePath}, {
-      headers: { Authorization: Bearer ${token} }
-    })
-    .then(res => res.json())
-    .then(data => { sha = data.sha; });
+      // Populate form
+      form.off("display", "");
+      form.classList.remove('hidden');
+      statusText.textContent = ✅ Editing campaign id=${offerId};
+      document.getElementById('offer').value = campaign.offer || '';
+      document.getElementById('id').value = campaign.id || '';
+      document.getElementById('User').value = campaign.User || '';
+      document.getElementById('refer').value = campaign.refer || '';
+      document.getElementById('status').value = campaign.status || '';
+      document.getElementById('payment').value = campaign.payment || '';
+      document.getElementById('description').value = campaign.description || '';
+      document.getElementById('tracking_link').value = campaign.tracking_link || '';
+    }).catch(err => {
+      console.error(err);
+      statusText.textContent = '❌ Error fetching or parsing offers.json (check console)';
+    });
   }
 
   function addNewLine() {
-    const desc = document.getElementById('description');
-    desc.value += '\n';
-    desc.focus();
+    document.getElementById('description').value += '\n';
+    document.getElementById('description').focus();
   }
 
-  // Save to GitHub
-  document.getElementById('editForm').addEventListener('submit', function(e) {
+  form.addEventListener('submit', e => {
     e.preventDefault();
-
-    const updated = {
-      offer: document.getElementById('offer').value,
-      id: document.getElementById('id').value,
-      User: document.getElementById('User').value,
-      refer: document.getElementById('refer').value,
-      status: document.getElementById('status').value,
-      payment: document.getElementById('payment').value,
-      description: document.getElementById('description').value,
-      tracking_link: document.getElementById('tracking_link').value
-    };
-
-    const index = allOffers.findIndex(c => c.id === offerId);
-    if (index === -1) {
-      document.getElementById('statusText').textContent = "❌ Campaign not found in data.";
-      return;
-    }
-
-    allOffers[index] = updated;
-
-    const encodedContent = btoa(JSON.stringify(allOffers, null, 2));
-
-    fetch(${apiBase}/repos/${repo}/contents/${filePath}, {
-      method: 'PUT',
-      headers: {
-        Authorization: Bearer ${token},
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        message: Updated campaign ID ${offerId},
-        content: encodedContent,
-        sha: sha
-      })
-    })
-    .then(res => res.json())
-    .then(result => {
-      if (result.commit) {
-        document.getElementById('statusText').textContent = "✅ Campaign updated successfully!";
-      } else {
-        throw new Error("Update failed.");
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      document.getElementById('statusText').textContent = "❌ Failed to update campaign.";
-    });
+    alert('Save functionality not wired yet—debug completed.');
   });
 </script>
 </body>
