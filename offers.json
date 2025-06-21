@@ -28,5 +28,15 @@
     "payment": "Instant",
     "description": "Enter your Upi And Click Submit.\n Redirect to App\n Link Your Bank Account\n Send Any Amount to Any Other UPI\n Done! You will get Rs.10 Instant.",
     "tracking_link": "https://link.hiqmobi.com/go/122/1255?p1={user}&p2={refer}&p3=100&p4=150"
+  },
+  {
+    "offer": "Paytm Money",
+    "id": "135",
+    "User": "230",
+    "refer": "150",
+    "status": "active",
+    "payment": "Instant",
+    "description": "Hii\nHow to be\nCareful\nThe\nHn to be in the world\nStop being so much for your support",
+    "tracking_link": "https://groww.ho"
   }
 ]
