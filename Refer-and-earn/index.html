@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Refer & Earn</title>
   <style>
-    body { font-family: sans-serif; background: #111; color: #fff; padding: 20px; }
+    body { font-family: sans-serif; background: black; color: white; padding: 20px; }
     select, input, button, .link-box { width:100%; padding:10px; margin:10px 0; border:none; border-radius:6px; }
     button { background: #2ecc71; cursor: pointer; color: #fff; }
     .link-box { background: #222; }
@@ -42,14 +42,19 @@
     }
 
     async function loadOffers(){
-      const res = await fetch(offersUrl);
-      offers = await res.json();
-      offers.forEach((o,i)=>{
-        const opt = document.createElement('option');
-        opt.value = i;
-        opt.textContent = ${o.offer} (₹${o.refer});
-        $('offer').appendChild(opt);
-      });
+      try {
+        const res = await fetch(offersUrl);
+        offers = await res.json();
+        offers.forEach((o,i)=>{
+          const opt = document.createElement('option');
+          opt.value = i;
+          opt.textContent = ${o.offer} (₹${o.refer});
+          $('offer').appendChild(opt);
+        });
+      } catch (e) {
+        alert("Failed to load offers.");
+        console.error(e);
+      }
     }
 
     async function saveRefer(upi, id){
