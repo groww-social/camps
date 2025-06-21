@@ -5,6 +5,7 @@
     "User": "10",
     "refer": "15",
     "description": "1. Enter your Upi And Click Submit.\n Redirect to App\n Link Your Bank Account\n Send Any Amount to Any Other UPI\n Done! You will get Rs.10 Instant.",
-    "tracking_link": "https://link.hiqmobi.com/go/451/1255?p1={user}&p2={refer}&p3=10&p4=15"
+    "tracking_link": "https://link.hiqmobi.com/go/451/1255?p1={user}&p2={refer}&p3=10&p4=15",
+    "status":"active"
   }
 ]
