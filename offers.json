@@ -23,10 +23,10 @@
     "offer": "Upstock",
     "id": "28",
     "User": "100",
-    "refer": "150",
-    "description": "Enter Upi id, Click Submit & Redirect towards partner Website.\n Now Register Using New Number.\n Open Account Using Adhaar & Pan No. and Wait for Approval",
-    "tracking_link": "https://link.hiqmobi.com/go/28/1255?p1={user}&p2={refer}&p3=100&p4=150",
+    "refer": "600",
     "status": "active",
-    "payment": "instant"
+    "payment": "instant",
+    "description": "Enter Upi id, Click Submit & Redirect towards partner Website.\n Now Register Using New Number.\n Open Account Using Adhaar & Pan No. and Wait for Approval",
+    "tracking_link": "https://link.hiqmobi.com/go/28/1255?p1={user}&p2={refer}&p3=100&p4=150"
   }
 ]
