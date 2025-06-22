@@ -1,119 +1,62 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard</title>
-  <link rel="stylesheet" href="https://groww-social.github.io/camps/admin/dashboard/style.css">
   <style>
-    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; color: #fff; }
-    th { background-color: #222; }
-    button { padding: 5px 10px; background: #00cec9; border: none; border-radius: 4px; color: #000; cursor: pointer; }
-    h1 { color: #0f0; }
+    body { font-family: sans-serif; background: #111; color: #fff; }
+    table { width:100%; border-collapse: collapse; margin-top:20px; }
+    th,td { padding:10px; border:1px solid #444; }
+    button { margin:0 5px; padding:5px 10px; background:#00cec9; color:#000; border:none; border-radius:4px; cursor:pointer; }
   </style>
 </head>
-<body><!-- ✅ Admin Token Check --><script>
-  const adminToken = localStorage.getItem("admin_token");
-  if (!adminToken) {
-    document.body.innerHTML = `
-      <div style="text-align: center; padding-top: 80px;">
-        <h1 style="font-size: 4em; color: #fff;">404</h1>
-        <p style="font-size: 1.5em; color: #ccc;">Page Not Found</p>
-        <p style="margin-top: 20px;">
-          <a href="/" style="color: #00cec9; text-decoration: underline;">Go to Home</a>
-        </p>
-      </div>
-    `;
-    setTimeout(() => window.location.href = "https://groww-social.github.io/camps", 3000);
-  }
-</script><!-- 🔵 Background Circles --><div class="circle circle-1"></div>
-<div class="circle circle-2"></div>
-<div class="circle circle-3"></div>
-<div class="circle circle-4"></div>
-<div class="circle circle-5"></div>
-<div class="circle circle-6"></div>
-<div class="circle circle-7"></div>
-<div class="circle circle-8"></div>
-<div class="circle circle-9"></div>
-<div class="circle circle-10"></div>
-<div class="circle circle-11"></div>
-<div class="circle circle-12"></div>
-<div class="circle circle-13"></div>
-<div class="circle circle-14"></div>
-<div class="circle circle-15"></div><!-- 🔘 Navbar --><nav class="navbar">
-  <button class="menu-toggle" id="menuToggleBtn" onclick="toggleMenu()">☰</button>
-  <div class="button-container" id="navButtons" style="display: none;">
-    <button>Add Campaign</button>
-    <button>Edit Campaign</button>
-    <button>Refer IDs</button>
-    <button>View Campaign</button>
-    <button>Check Tracking</button>
-    <button>Edit Themes</button>
-    <button>Account</button>
-  </div>
-</nav><h1>Dashboard</h1>
-<div id="campaigns">Loading...</div><script>
+<body>
+
+<h1>Dashboard</h1>
+<div id="campaigns">Loading...</div>
+
+<script>
   document.addEventListener("DOMContentLoaded", async () => {
     console.log("DOM ready");
-    const rawUrl = 'https://groww-social.github.io/camps/offers.json?cache=' + Date.now();
+
+    const adminToken = localStorage.getItem("admin_token");
+    console.log("Admin token:", adminToken);
+    if (!adminToken) {
+      document.body.innerHTML = "<h2>Access Denied — Please Login</h2>";
+      return;
+    }
+
+    // Use absolute path
+    const rawUrl = "https://groww-social.github.io/camps/offers.json?cache=" + Date.now();
+    console.log("Fetching:", rawUrl);
 
     try {
       const res = await fetch(rawUrl);
+      console.log("Fetch response:", res.status);
+      if (!res.ok) throw new Error("HTTP " + res.status);
+
       const data = await res.json();
-      console.log("✅ Loaded:", data);
+      console.log("Loaded data:", data);
       renderTable(data);
-    } catch (e) {
-      console.error("❌ Fetch error:", e);
-      document.getElementById("campaigns").innerHTML = <p style='color:red;'>Failed to load campaigns.</p>;
+    } catch (err) {
+      console.error("Fetch error:", err);
+      document.getElementById("campaigns").innerText = "Failed to load campaigns: " + err.message;
     }
   });
 
   function renderTable(campaigns) {
-    let html = `
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Offer</th>
-            <th>User</th>
-            <th>Refer</th>
-            <th>Status</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-    `;
-
-    campaigns.forEach(c => {
-      html += `
-        <tr>
-          <td>${c.id}</td>
-          <td>${c.offer}</td>
-          <td>₹${c.User}</td>
-          <td>₹${c.refer}</td>
-          <td>${c.status}</td>
-          <td>
-            <button onclick="alert('View: ${c.id}')">View</button>
-            <button onclick="alert('Delete: ${c.id}')">Delete</button>
-          </td>
-        </tr>
-      `;
+    let html = "<table><thead><tr><th>ID</th><th>Offer</th><th>User</th><th>Refer</th><th>Status</th><th>Action</th></tr></thead><tbody>";
+    campaigns.forEach((c,i) => {
+      html += `<tr>
+        <td>${c.id}</td><td>${c.offer}</td><td>₹${c.User}</td><td>₹${c.refer}</td><td>${c.status}</td>
+        <td><button onclick="alert('View ${c.id}')">View</button><button onclick="alert('Delete ${c.id}')">Delete</button></td>
+      </tr>`;
     });
-
-    html += </tbody></table>;
+    html += "</tbody></table>";
     document.getElementById("campaigns").innerHTML = html;
   }
+</script>
 
-  function toggleMenu() {
-    const btns = document.getElementById('navButtons');
-    const toggleBtn = document.getElementById('menuToggleBtn');
-    if (btns.style.display === 'none' || btns.style.display === '') {
-      btns.style.display = 'flex';
-      toggleBtn.innerHTML = '✖';
-    } else {
-      btns.style.display = 'none';
-      toggleBtn.innerHTML = '☰';
-    }
-  }
-</script></body>
+</body>
 </html>
