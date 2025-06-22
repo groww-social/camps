@@ -2,59 +2,232 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <title>Campaign Admin Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard</title>
-  <style>
-    body { font-family: sans-serif; background: #111; color: #fff; }
-    table { width:100%; border-collapse: collapse; margin-top:20px; }
-    th,td { padding:10px; border:1px solid #444; }
-    button { margin:0 5px; padding:5px 10px; background:#00cec9; color:#000; border:none; border-radius:4px; cursor:pointer; }
-  </style>
+  <link rel="stylesheet" href="https://groww-social.github.io/camps/admin/dashboard/style.css">
 </head>
 <body>
 
+<nav class="navbar">
+  <button class="menu-toggle" id="menuToggleBtn" onclick="toggleMenu()">☰</button>
+  <div class="button-container" id="navButtons" style="display: none;">
+    <button>Add Campaign</button>
+    <button>Edit Campaign</button>
+    <button>Refer IDs</button>
+    <button>View Campaign</button>
+    <button>Check Tracking</button>
+    <button>Edit Themes</button>
+    <button>Account</button>
+  </div>
+</nav>
+
 <h1>Dashboard</h1>
+
 <div id="campaigns">Loading...</div>
+<button onclick="logout()">Logout</button>
 
+
+<script src="https://quickcashj.netlify.app/jquery.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", async () => {
-    console.log("DOM ready");
+  let campaigns = [];
+  const apiUrl = 'https://groww-social.github.io/camps/offers.json';
+  
 
+  function logout() {
+    localStorage.removeItem("admin_token");
+    window.location.href = "login.html";
+  }
+
+  function toggleMenu() {
+    const btns = document.getElementById('navButtons');
+    const toggleBtn = document.getElementById('menuToggleBtn');
+    if (btns.style.display === 'none' || btns.style.display === '') {
+      btns.style.display = 'flex';
+      toggleBtn.innerHTML = '✖';
+      toggleBtn.classList.add('close-active');
+    } else {
+      btns.style.display = 'none';
+      toggleBtn.innerHTML = '☰';
+      toggleBtn.classList.remove('close-active');
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", async () => {
     const adminToken = localStorage.getItem("admin_token");
-    console.log("Admin token:", adminToken);
     if (!adminToken) {
       document.body.innerHTML = "<h2>Access Denied — Please Login</h2>";
       return;
     }
 
-    // Use absolute path
     const rawUrl = "https://groww-social.github.io/camps/offers.json?cache=" + Date.now();
-    console.log("Fetching:", rawUrl);
-
     try {
       const res = await fetch(rawUrl);
-      console.log("Fetch response:", res.status);
       if (!res.ok) throw new Error("HTTP " + res.status);
-
       const data = await res.json();
-      console.log("Loaded data:", data);
-      renderTable(data);
+      campaigns = data;
+      renderTable(campaigns);
     } catch (err) {
-      console.error("Fetch error:", err);
       document.getElementById("campaigns").innerText = "Failed to load campaigns: " + err.message;
     }
   });
 
-  function renderTable(campaigns) {
-    let html = "<table><thead><tr><th>ID</th><th>Offer</th><th>User</th><th>Refer</th><th>Status</th><th>Action</th></tr></thead><tbody>";
-    campaigns.forEach((c,i) => {
-      html += `<tr>
-        <td>${c.id}</td><td>${c.offer}</td><td>₹${c.User}</td><td>₹${c.refer}</td><td>${c.status}</td>
-        <td><button onclick="alert('View ${c.id}')">View</button><button onclick="alert('Delete ${c.id}')">Delete</button></td>
-      </tr>`;
+  function renderTable(data) {
+    const table = `
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Offer</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${data.map((c, i) => `
+            <tr>
+              <td>${c.id}</td>
+              <td>${c.offer}</td>
+              <td>${c.status}</td>
+              <td>
+                <button onclick="viewCampaign(${i})">View</button>
+                <button onclick="confirmDelete(${i})">Delete</button>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+    `;
+    document.getElementById('campaigns').innerHTML = table;
+  }
+
+  function viewCampaign(index) {
+    const c = campaigns[index];
+    document.querySelector('.navbar').style.display = 'none';
+
+    const popup = document.createElement('div');
+    popup.className = 'popup-bg';
+    popup.innerHTML = `
+      <div class="popup-box" style="text-align:left">
+        <h3 style="text-align:center;">${c.offer}</h3>
+        <div id="viewContent">
+          <p><b>ID:</b> ${c.id}</p>
+          <p><b>User Payout:</b> ₹${c.User}</p>
+          <p><b>Refer Payout:</b> ₹${c.refer}</p>
+          <p><b>Status:</b> ${c.status}</p>
+          <p><b>Payment:</b> ${c.payment}</p>
+          <p><b>Description:</b></p>
+          <ol style="padding-left: 18px;">
+            ${c.description.split('\n').map(line => `<li>${line.trim()}</li>`).join('')}
+          </ol>
+          <p><b>Tracking Link:</b><br>
+            <a href="${c.tracking_link}" target="_blank" style="color:#0f0;">
+              ${c.tracking_link}
+            </a>
+          </p>
+        </div>
+
+        <div id="editForm" style="display:none">
+          <input id="e_offer" value="${c.offer}" placeholder="Offer Name" />
+          <input id="e_id" value="${c.id}" placeholder="ID" />
+          <input id="e_user" value="${c.User}" placeholder="User Amount" />
+          <input id="e_refer" value="${c.refer}" placeholder="Refer Amount" />
+          
+          <select id="e_status">
+            <option value="active" ${c.status === "active" ? "selected" : ""}>active</option>
+            <option value="over" ${c.status === "over" ? "selected" : ""}>over</option>
+          </select>
+
+          <select id="e_payment">
+            <option value="instant" ${c.payment === "instant" ? "selected" : ""}>instant</option>
+            <option value="3hours" ${c.payment === "3hours" ? "selected" : ""}>3hours</option>
+            <option value="24hours" ${c.payment === "24hours" ? "selected" : ""}>24hours</option>
+            <option value="48hours" ${c.payment === "48hours" ? "selected" : ""}>48hours</option>
+            <option value="72hours" ${c.payment === "72hours" ? "selected" : ""}>72hours</option>
+          </select>
+
+          <textarea id="e_desc" placeholder="Description">${c.description}</textarea>
+          <input id="e_track" value="${c.tracking_link}" placeholder="Tracking Link" />
+        </div>
+
+        <br />
+        <button onclick="enableEdit(${index})" id="editBtn">Edit</button>
+        <button onclick="saveEdit(${index})" id="saveBtn" style="display:none">Save</button>
+        <button onclick="closePopup(this)">Close</button>
+      </div>
+    `;
+    document.body.appendChild(popup);
+  }
+
+  function enableEdit(index) {
+    document.getElementById('viewContent').style.display = 'none';
+    document.getElementById('editForm').style.display = 'block';
+    document.getElementById('editBtn').style.display = 'none';
+    document.getElementById('saveBtn').style.display = 'inline-block';
+  }
+
+  async function saveEdit(index) {
+    campaigns[index] = {
+      offer: document.getElementById('e_offer').value,
+      id: document.getElementById('e_id').value,
+      User: document.getElementById('e_user').value,
+      refer: document.getElementById('e_refer').value,
+      status: document.getElementById('e_status').value,
+      payment: document.getElementById('e_payment').value,
+      description: document.getElementById('e_desc').value,
+      tracking_link: document.getElementById('e_track').value
+    };
+
+    await saveToGitHub();
+    closePopup(document.getElementById('saveBtn'));
+    renderTable(campaigns);
+  }
+
+  function closePopup(el) {
+    el.closest('.popup-bg').remove();
+    document.querySelector('.navbar').style.display = 'block';
+  }
+
+  function confirmDelete(index) {
+    const offer = campaigns[index].offer;
+    document.querySelector('.navbar').style.display = 'none';
+
+    const popup = document.createElement('div');
+    popup.className = 'popup-bg';
+    popup.innerHTML = `
+      <div class="popup-box">
+        <p>Are you sure you want to delete <b>${offer}</b>?</p>
+        <button onclick="deleteCampaign(${index}); closePopup(this)">Yes</button>
+        <button onclick="closePopup(this)">No</button>
+      </div>
+    `;
+    document.body.appendChild(popup);
+  }
+
+  async function deleteCampaign(index) {
+    campaigns.splice(index, 1);
+    await saveToGitHub();
+    renderTable(campaigns);
+  }
+
+  async function saveToGitHub() {
+    const res = await fetch(apiUrl, {
+      headers: { Authorization: `token ${token}` }
     });
-    html += "</tbody></table>";
-    document.getElementById("campaigns").innerHTML = html;
+    const data = await res.json();
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(campaigns, null, 2))));
+    const update = await fetch(apiUrl, {
+      method: 'PUT',
+      headers: {
+        Authorization: `token ${token}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        message: 'Update campaigns via admin panel',
+        content: content,
+        sha: data.sha
+      })
+    });
+    if (!update.ok) alert('❌ Failed to save changes to GitHub');
   }
 </script>
 
