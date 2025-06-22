@@ -10,23 +10,29 @@
 
 <!-- 🔒 SESSION CHECK FIRST -->
 <script>
-  const adminToken = localStorage.getItem("admin_token");
-  if (!adminToken) {
-    document.body.innerHTML = `
-      <div style="text-align: center; padding-top: 80px;">
-        <h1 style="font-size: 4em; color: #fff;">404</h1>
-        <p style="font-size: 1.5em; color: #ccc;">Page Not Found</p>
-        <p style="margin-top: 20px;">
-          <a href="/" style="color: #00cec9; text-decoration: underline;">Go to Home</a>
-        </p>
-      </div>
-    `;
-    setTimeout(() => {
-      window.location.href = "https://groww-social.github.io/camps";
-    }, 3000);
-  }
-</script>
+  window.onload = () => {
+    const adminToken = localStorage.getItem("admin_token");
 
+    if (!adminToken) {
+      document.body.innerHTML = `
+        <div style="text-align: center; padding-top: 80px;">
+          <h1 style="font-size: 4em; color: #fff;">404</h1>
+          <p style="font-size: 1.5em; color: #ccc;">Page Not Found</p>
+          <p style="margin-top: 20px;">
+            <a href="/" style="color: #00cec9; text-decoration: underline;">Go to Home</a>
+          </p>
+        </div>
+      `;
+
+      setTimeout(() => {
+        window.location.href = "https://groww-social.github.io/camps";
+      }, 3000);
+    } else {
+      // ✅ token exists, continue with loading
+      loadCampaigns();
+    }
+  };
+</script>
 <!-- 🔵 Background Circles -->
 <div class="circle circle-1"></div>
 <div class="circle circle-2"></div>
@@ -238,7 +244,7 @@ async function saveEdit(index) {
       if (!update.ok) alert('❌ Failed to save to GitHub');  
     }  
   
-    loadCampaigns();  
+    
       
     function toggleMenu() {  
   const btns = document.getElementById('navButtons');  
