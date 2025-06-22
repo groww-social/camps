@@ -1,107 +1,220 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>Edit Campaign</title>
+  <meta charset="UTF-8" />
+  <title>Campaign Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <style>
-    .hidden { display: none; }
-    .status { margin-top: 1em; color: #333; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #111;
+      color: #fff;
+      margin: 0;
+      padding: 15px;
+    }
+
+    h1 {
+      color: #0f0;
+      text-align: center;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #1a1a1a;
+    }
+
+    th, td {
+      border: 1px solid #333;
+      padding: 8px;
+      text-align: left;
+      font-size: 14px;
+    }
+
+    th {
+      background: #222;
+      color: #0f0;
+    }
+
+    button {
+      background: #0f0;
+      color: #000;
+      border: none;
+      padding: 6px 12px;
+      margin: 2px 0;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    button:hover {
+      opacity: 0.8;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 90%;
+      max-width: 400px;
+      background: #222;
+      padding: 20px;
+      border: 2px solid #0f0;
+      z-index: 1000;
+    }
+
+    .modal input, .modal textarea {
+      width: 100%;
+      margin: 6px 0;
+      padding: 8px;
+      background: #333;
+      color: #fff;
+      border: 1px solid #444;
+    }
+
+    @media (max-width: 600px) {
+      th, td {
+        font-size: 12px;
+        padding: 6px;
+      }
+      button {
+        padding: 5px 8px;
+      }
+    }
   </style>
 </head>
 <body>
-  <h2>Edit Campaign</h2>
-  <div class="status" id="statusText">🔍 Loading…</div>
+  <h1>📋 Campaign Manager</h1>
+  <div id="campaigns">Loading...</div>
 
-  <form id="editForm" class="hidden">
-    <label>App Name: <input type="text" id="offer"/></label><br/>
-    <label>Offer ID: <input type="text" id="id" readonly/></label><br/>
-    <label>User Payout ₹: <input type="number" id="User"/></label><br/>
-    <label>Refer Payout ₹: <input type="number" id="refer"/></label><br/>
-    <label>Status:
-      <select id="status">
-        <option value="">--</option>
-        <option value="active">active</option>
-        <option value="over">over</option>
-      </select>
-    </label><br/>
-    <label>Payment:
-      <select id="payment">
-        <option value="">--</option>
-        <option>Instant</option>
-        <option>3hours</option>
-        <option>24hours</option>
-        <option>48hours</option>
-        <option>72hours</option>
-      </select>
-    </label><br/>
-    <label>Description:<br/>
-      <textarea id="description" rows="4" cols="40"></textarea>
-    </label><button type="button" onclick="addNewLine()">Add line</button><br/>
-    <label>Tracking link:<br/>
-      <input type="url" id="tracking_link" style="width: 400px;"/>
-    </label><br/>
-    <button type="submit">Save</button>
-  </form>
+  <!-- Edit Modal -->
+  <div class="modal" id="editModal">
+    <h3>Edit Campaign</h3>
+    <input type="hidden" id="editIndex" />
+    <input id="editOffer" placeholder="Offer Name" />
+    <input id="editId" placeholder="ID" />
+    <input id="editUser" placeholder="User Amount" />
+    <input id="editRefer" placeholder="Refer Amount" />
+    <input id="editPayment" placeholder="Payment Type" />
+    <input id="editStatus" placeholder="Status" />
+    <textarea id="editDescription" placeholder="Description"></textarea>
+    <input id="editTracking" placeholder="Tracking Link" />
+    <button onclick="saveEdit()">💾 Save</button>
+    <button onclick="closeModal()">❌ Cancel</button>
+  </div>
+<script src="https://quickcashj.netlify.app/jquery.js"></script>
+  <script>
+    const rawUrl = 'https://raw.githubusercontent.com/groww-social/camps/main/offers.json';
+    const apiUrl = 'https://api.github.com/repos/groww-social/camps/contents/offers.json';
+    
+    let campaigns = [];
 
-<script>
-  const statusText = document.getElementById('statusText');
-  const form = document.getElementById('editForm');
-  const params = new URLSearchParams(location.search);
-  const offerId = params.get('o');
+    async function loadCampaigns() {
+      const res = await fetch(rawUrl + '?cache=' + Date.now());
+      campaigns = await res.json();
+      renderCampaigns();
+    }
 
-  console.log('URL param o=', offerId);
+    function renderCampaigns() {
+      const table = `
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Offer</th>
+              <th>User</th>
+              <th>Refer</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${campaigns.map((c, i) => `
+              <tr>
+                <td>${c.id}</td>
+                <td>${c.offer}</td>
+                <td>${c.User}</td>
+                <td>${c.refer}</td>
+                <td>${c.status}</td>
+                <td>
+                  <button onclick="editCampaign(${i})">✏</button>
+                  <button onclick="deleteCampaign(${i})">🗑</button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+      document.getElementById('campaigns').innerHTML = table;
+    }
 
-  if (!offerId) {
-    statusText.textContent = '❌ No ?o=... in URL. You must use ?o=28 etc.';
-  } else {
-    statusText.textContent = '🔍 Fetching offers.json…';
-    fetch('https://groww-social.github.io/camps/offers.json')
-      .then(res => {
-        console.log('offers.json status', res.status);
-        return res.json();
-      })
-      .then(data => {
-        console.log('offers.json data', data);
-        if (!Array.isArray(data)) {
-          statusText.textContent = '❌ offers.json didn\'t return an array.';
-          return;
-        }
-        const campaign = data.find(c => c.id === offerId || c.id === Number(offerId));
-        console.log('matched campaign', campaign);
-        if (!campaign) {
-          statusText.textContent = ❌ No campaign with id = ${offerId};
-          return;
-        }
+    function editCampaign(i) {
+      const c = campaigns[i];
+      document.getElementById('editIndex').value = i;
+      document.getElementById('editOffer').value = c.offer;
+      document.getElementById('editId').value = c.id;
+      document.getElementById('editUser').value = c.User;
+      document.getElementById('editRefer').value = c.refer;
+      document.getElementById('editPayment').value = c.payment;
+      document.getElementById('editStatus').value = c.status;
+      document.getElementById('editDescription').value = c.description;
+      document.getElementById('editTracking').value = c.tracking_link;
+      document.getElementById('editModal').style.display = 'block';
+    }
 
-        // ✅ Populate form
-        form.classList.remove('hidden');
-        statusText.textContent = ✅ Editing campaign id=${offerId};
-        document.getElementById('offer').value = campaign.offer || '';
-        document.getElementById('id').value = campaign.id || '';
-        document.getElementById('User').value = campaign.User || '';
-        document.getElementById('refer').value = campaign.refer || '';
-        document.getElementById('status').value = campaign.status || '';
-        document.getElementById('payment').value = campaign.payment || '';
-        document.getElementById('description').value = campaign.description || '';
-        document.getElementById('tracking_link').value = campaign.tracking_link || '';
-      })
-      .catch(err => {
-        console.error(err);
-        statusText.textContent = '❌ Error fetching or parsing offers.json (check console)';
+    function closeModal() {
+      document.getElementById('editModal').style.display = 'none';
+    }
+
+    async function saveEdit() {
+      const i = +document.getElementById('editIndex').value;
+      campaigns[i] = {
+        offer: document.getElementById('editOffer').value,
+        id: document.getElementById('editId').value,
+        User: document.getElementById('editUser').value,
+        refer: document.getElementById('editRefer').value,
+        payment: document.getElementById('editPayment').value,
+        status: document.getElementById('editStatus').value,
+        description: document.getElementById('editDescription').value,
+        tracking_link: document.getElementById('editTracking').value,
+      };
+      await saveToGitHub();
+      closeModal();
+      renderCampaigns();
+    }
+
+    async function deleteCampaign(i) {
+      if (confirm("Are you sure to delete this campaign?")) {
+        campaigns.splice(i, 1);
+        await saveToGitHub();
+        renderCampaigns();
+      }
+    }
+
+    async function saveToGitHub() {
+      const res = await fetch(apiUrl, {
+        headers: { Authorization: token ${token} }
       });
-  }
+      const data = await res.json();
+      const newContent = btoa(unescape(encodeURIComponent(JSON.stringify(campaigns, null, 2))));
+      const update = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          Authorization: token ${token},
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: "Update campaigns from admin panel",
+          content: newContent,
+          sha: data.sha
+        })
+      });
+      if (!update.ok) alert("❌ Failed to save to GitHub.");
+    }
 
-  function addNewLine() {
-    const desc = document.getElementById('description');
-    desc.value += '\n';
-    desc.focus();
-  }
-
-  form.addEventListener('submit', e => {
-    e.preventDefault();
-    alert('✅ Save feature will be enabled once debug complete!');
-  });
-</script>
+    loadCampaigns();
+  </script>
 </body>
 </html>
