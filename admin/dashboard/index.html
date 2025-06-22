@@ -237,9 +237,9 @@ async function saveEdit(index) {
 }  
   </script>  
   <script>
-  const token = localStorage.getItem("admin_token");
+  const admintoken = localStorage.getItem("admin_token");
 
-  if (!token) {
+  if (!admintoken) {
     document.body.innerHTML = `
       <div style="text-align: center; padding-top: 80px;">
         <h1 style="font-size: 4em; color: #fff;">404</h1>
