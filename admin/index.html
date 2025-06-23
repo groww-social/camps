@@ -150,9 +150,9 @@
           const token = btoa(`${u}:${Date.now()}`);
           localStorage.setItem("admin_token", token);
           alert("Login successful");
-          window.location.href = "https://groww-social.github.io/camps/admin/dashboard/index.html";
+          window.location.href = "dashboard";
         } else {
-          alert("Invalid username or password");
+          alert("Bhai Galat Password Hai <br> Yaad Karke Sahi Password Daal");
         }
 
       } catch (err) {
