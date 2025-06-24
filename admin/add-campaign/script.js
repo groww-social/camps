@@ -1,16 +1,16 @@
-const repo = "groww-social/camps";  
-const filePath = "offers.json";  
+const repo = "groww-social/camps";
+const filePath = "offers.json";
 
-async function fetchCurrentData() {  
-  const res = await fetch(https://api.github.com/repos/${repo}/contents/${filePath}, {
-    headers: { Authorization: token ${token} }
-  });  
-  const data = await res.json();  
-  const content = atob(data.content);  
-  return { json: JSON.parse(content), sha: data.sha };  
-}  
+async function fetchCurrentData() {
+  const res = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}`, {
+    headers: { Authorization: `token ${token}` }
+  });
+  const data = await res.json();
+  const content = atob(data.content);
+  return { json: JSON.parse(content), sha: data.sha };
+}
 
-document.getElementById("campaignForm").addEventListener("submit", async function(e) {
+document.getElementById("campaignForm").addEventListener("submit", async function (e) {
   e.preventDefault();
   const statusBox = document.getElementById("statusText");
   statusBox.textContent = "Saving...";
@@ -31,10 +31,10 @@ document.getElementById("campaignForm").addEventListener("submit", async functio
     json.push(newCampaign);
     const updatedContent = btoa(JSON.stringify(json, null, 2));
 
-    await fetch(https://api.github.com/repos/${repo}/contents/${filePath}, {
+    await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}`, {
       method: "PUT",
       headers: {
-        Authorization: token ${token},
+        Authorization: `token ${token}`,
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
@@ -46,18 +46,17 @@ document.getElementById("campaignForm").addEventListener("submit", async functio
 
     statusBox.textContent = "✅ Campaign saved successfully!";
     document.getElementById("campaignForm").reset();
-
   } catch (err) {
     console.error(err);
     statusBox.textContent = "❌ Failed to save campaign.";
   }
 });
 
-function addNewLine() {  
-  const textarea = document.getElementById("description");  
-  const cursorPosition = textarea.selectionStart;  
-  const value = textarea.value;  
-  textarea.value = value.substring(0, cursorPosition) + "\n" + value.substring(cursorPosition);  
-  textarea.focus();  
-  textarea.selectionEnd = cursorPosition + 1;  
+function addNewLine() {
+  const textarea = document.getElementById("description");
+  const cursorPosition = textarea.selectionStart;
+  const value = textarea.value;
+  textarea.value = value.substring(0, cursorPosition) + "\n" + value.substring(cursorPosition);
+  textarea.focus();
+  textarea.selectionEnd = cursorPosition + 1;
 }
