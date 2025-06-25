@@ -23,9 +23,9 @@
     const FILE_PATH = "postback/post.json";
 
     async function fetchFile() {
-      const url = https://api.github.com/repos/${GITHUB_USER}/${REPO}/contents/${FILE_PATH};
+      const url = `https://api.github.com/repos/${GITHUB_USER}/${REPO}/contents/${FILE_PATH}`;
       const res = await fetch(url, {
-        headers: { Authorization: token ${token} }
+        headers: { Authorization: `token ${token}` }
       });
       const json = await res.json();
       return {
@@ -35,7 +35,7 @@
     }
 
     async function updateFile(content, sha) {
-      const url = https://api.github.com/repos/${GITHUB_USER}/${REPO}/contents/${FILE_PATH};
+      const url = `https://api.github.com/repos/${GITHUB_USER}/${REPO}/contents/${FILE_PATH}`;
       const body = {
         message: "Postback update",
         content: btoa(JSON.stringify(content, null, 2)),
@@ -44,7 +44,7 @@
       const res = await fetch(url, {
         method: "PUT",
         headers: {
-          Authorization: token ${token},
+          Authorization: `token ${token}`,
           "Content-Type": "application/json"
         },
         body: JSON.stringify(body)
@@ -67,7 +67,7 @@
 
       try {
         const { content, sha } = await fetchFile();
-        content.push(entry); // append to existing array
+        content.push(entry);
         const success = await updateFile(content, sha);
         if (success) {
           document.body.innerHTML = "<h2>✅ Postback Sent Successfully</h2>";
@@ -76,7 +76,7 @@
         }
       } catch (err) {
         console.error("Fetch error:", err);
-        document.body.innerHTML = <h2>🚫 Error</h2><pre>${err.message}</pre>;
+        document.body.innerHTML = `<h2>🚫 Error</h2><pre>${err.message}</pre>`;
       }
     }
 
