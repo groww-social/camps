@@ -1,5 +1,5 @@
 
-const offersUrl = 'https://groww-social.github.io/camps/offers.json';
+const offersUrl = './offers.json';
     const refersApi = 'https://api.github.com/repos/groww-social/camps/contents/refers.json';
     
     let offers = [];
@@ -62,7 +62,7 @@ const offersUrl = 'https://groww-social.github.io/camps/offers.json';
 
       const offer = offers[offerIndex];
       const refId = await saveRefer(upi);
-      const link = `https://groww-social.github.io/camps/c/?o=${offer.id}&r=${refId}`;
+      const link = `https://quickcash.tech/c/?o=${offer.id}&r=${refId}`;
 
       $('ref-link').textContent = link;
       $('output').style.display = 'block';
