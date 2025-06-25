@@ -1,1 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quick Cash • Offers</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<!-- Background Circles -->
+  <div class="circle circle-1"></div>
+  <div class="circle circle-2"></div>
+  <div class="circle circle-3"></div>
+  <div class="circle circle-4"></div>
+  <div class="circle circle-5"></div>
+  <div class="circle circle-6"></div>
+  <div class="circle circle-7"></div>
+  <div class="circle circle-8"></div>
+  <div class="circle circle-9"></div>
+  <div class="circle circle-10"></div>
+  <div class="circle circle-11"></div>
+  <div class="circle circle-12"></div>
+  <div class="circle circle-13"></div>
+  <div class="circle circle-14"></div>
+  <div class="circle circle-15"></div>
+  <div class="circle circle-16"></div>
+  <div class="container">
+    <div class="logo-section">
+      <div class="logo">
+        <img src="http://quickcash.tech/images/quickcashlogo.png" alt="Campaign Logo" class="logo-img">
+      </div>
+      <div class="header">
+        <div class="campaign-header">
+          <div class="campaign-name">Loading...</div>
+          <div class="reward-badge">₹0</div>
+        </div>
+      </div>
+    </div>
 
+    <form onsubmit="handleSubmit(event)">
+  <input type="text" class="input-field" placeholder="Enter Your UPI ID" required />
+  <button type="submit" class="submit-btn">Submit</button>
+</form>
+
+    <div class="instructions">
+      <h3>HOW TO AVAIL THIS OFFER</h3>
+      <ol>
+        <li>Loading instructions...</li>
+      </ol>
+    </div>
+
+    <div class="congratulations">Congratulations! ₹0 has been successfully credited to your UPI ID.</div>
+    <button class="check-tracking-btn" onclick="window.location.href='https://t.me/quickcashalert'">
+  Check Tracking
+</button>
+
+    
+  </div>
+
+
+<!-- Offer Not Found Message -->
+<div id="offer-not-found" style="display:none; text-align:center; padding: 40px; z-index: 11; position: relative;">
+  <h2>🎯 Offer Not Found or Expired</h2>
+</div>
+
+  <footer class="footer">
+    Designed by <strong>Manoranjan</strong><br />
+    Powered by <strong>Quick Cash</strong>
+  </footer>
+
+  <!-- Dynamic Data Fetch Script -->
+<script>
+const offersUrl = 'https://quickcash.tech/offers.json';
+const refersUrl = 'https://quickcash.tech/refers.json';
+
+const params = new URLSearchParams(window.location.search);
+const offerId = params.get('o');
+const referId = params.get('r');
+
+let offer = null;
+let referUpi = null;
+let referValid = false;
+
+// Load offer details
+async function loadOfferDetails() {
+  try {
+    const offerRes = await fetch(offersUrl);
+    const offers = await offerRes.json();
+    offer = offers.find(o => o.id === offerId);
+
+    if (!offer) {
+      // Show error if offer not found
+      document.querySelector('.container').style.display = 'none';
+      document.getElementById('offer-not-found').style.display = 'block';
+      return;
+    }
+
+    // Check offer status
+    if (offer.status && offer.status.toLowerCase() === 'over') {
+      document.querySelector('.container').style.display = 'none';
+      document.getElementById('offer-not-found').innerHTML = `
+        <h2>🚫 Offer Paused</h2>
+        <p>This offer is currently paused. We will notify you once it's live again.</p>
+      `;
+      document.getElementById('offer-not-found').style.display = 'block';
+      return;
+    }
+
+    // Fill details if offer is valid and active
+    document.querySelector('.campaign-name').textContent = offer.offer;
+    document.querySelector('.reward-badge').textContent = `₹${offer.User}`;
+
+    // Payment Time Text
+    const paymentTime = offer.payment?.toLowerCase() || "soon";
+    let paymentText = "soon.";
+    if (paymentTime.includes("instant")) {
+      paymentText = "Instantly.";
+    } else if (paymentTime.match(/^\d+\s?(hours|hour|hrs|days|day|minutes|min)$/i)) {
+      paymentText = `within ${paymentTime}.`;
+    } else {
+      paymentText = `within ${paymentTime}.`;
+    }
+
+    document.querySelector('.congratulations').textContent =
+      `Congratulations! ₹${offer.User} has been successfully credited to your UPI ID ${paymentText}`;
+
+    const ol = document.querySelector('.instructions ol');
+    ol.innerHTML = offer.description
+      .split('\n')
+      .map(step => `<li>${step.trim()}</li>`)
+      .join('');
+
+    if (offer.image) {
+      document.querySelector('.logo-img').src = offer.image;
+    }
+
+  } catch (err) {
+    console.error('Error loading offer:', err);
+  }
+}
+
+// Load refer UPI using referId
+async function loadReferUpi() {
+  try {
+    const referRes = await fetch(refersUrl);
+    const refers = await referRes.json();
+    const ref = refers.find(r => r.id === referId);
+    if (ref) {
+      referUpi = ref.upi;
+      referValid = true;
+    } else {
+      referValid = false;
+    }
+  } catch (err) {
+    console.error('Error loading refer upi:', err);
+  }
+}
+
+// Handle UPI form submission
+async function handleSubmit(e) {
+  e.preventDefault();
+  const userUpi = document.querySelector('.input-field').value.trim();
+
+  if (!referValid) {
+    alert('⚠️ Invalid link. Please use a valid link.');
+    return;
+  }
+
+  const trackingLink = offer.tracking_link
+    .replace('user', encodeURIComponent(userUpi))
+    .replace('refer', encodeURIComponent(referUpi));
+
+  // Redirect to the final tracking URL
+  window.location.href = trackingLink;
+}
+
+// Initialize
+loadOfferDetails();
+loadReferUpi();
+</script>
+
+</body>
+</html>
