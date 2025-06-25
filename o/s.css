@@ -1,0 +1,107 @@
+
+/* Animated Circles */
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.6;
+      z-index: 0;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+     /* 16 Circles with unique sizes, positions, and delays */
+    .circle-1 { width: 80px; height: 80px; background: #ff8a80; top: 10%; left: 10%; animation: float 6s ease-in-out infinite; }
+    .circle-2 { width: 70px; height: 70px; background: #a29bfe; bottom: 10%; right: 15%; animation: float 8s ease-in-out infinite; }
+    .circle-3 { width: 90px; height: 90px; background: #00b894; top: 50%; right: -30px; animation: float 7s ease-in-out infinite; }
+    .circle-4 { width: 120px; height: 120px; background: #ffd93d; top: 35%; right: 5%; animation: float 10s ease-in-out infinite; }
+    .circle-5 { width: 60px; height: 60px; background: #6c5ce7; top: 60%; left: -10px; animation: float 5s ease-in-out infinite; }
+    .circle-6 { width: 90px; height: 90px; background: #a29bfe; left: 10%; top: 70%; animation: float 9s ease-in-out infinite; }
+    .circle-7 { width: 110px; height: 110px; background: #fd79a8; left: -30px; top: 75%; animation: float 12s ease-in-out infinite; }
+    .circle-8 { width: 80px; height: 80px; background: #00cec9; left: 15%; bottom: 20%; animation: float 6s ease-in-out infinite; }
+    .circle-9 { width: 95px; height: 95px; background: #e17055; right: 20%; bottom: 15%; animation: float 8s ease-in-out infinite; }
+    .circle-10 { width: 75px; height: 75px; background: #0984e3; right: -20px; bottom: 25%; animation: float 10s ease-in-out infinite; }
+    .circle-11 { width: 85px; height: 85px; background: #55a3ff; left: 50%; bottom: 10%; animation: float 7s ease-in-out infinite, pulse 5s ease-in-out infinite; }
+    .circle-12 { width: 65px; height: 65px; background: #ff7675; right: 10%; bottom: 35%; animation: float 9s ease-in-out infinite; }
+    .circle-13 { width: 105px; height: 105px; background: #81ecec; left: -40px; bottom: 5%; animation: float 12s ease-in-out infinite, pulse 6s ease-in-out infinite; }
+    .circle-14 { width: 90px; height: 90px; background: #fab1a0; right: -30px; bottom: 5%; animation: float 8s ease-in-out infinite; }
+    .circle-15 { width: 70px; height: 70px; background: #55efc4; left: 30%; bottom: 30%; animation: float 9s ease-in-out infinite; }
+    .circle-16 { width: 100px; height: 100px; background: #ffb74d; top: 20%; left: 45%; animation: float 11s ease-in-out infinite; }
+    
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+      background: linear-gradient(135deg, #f8d7da, #f5c2c7, #f1aeb5);
+      height: 100%;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+      position: relative;
+    }
+    .container { max-width: 400px; margin: 0 auto; padding: 20px; position: relative; z-index: 10; animation: fadeInSlide 1s ease-in-out; }
+    @keyframes fadeInSlide { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    .back-button { width: 50px; height: 50px; background: rgba(255, 255, 255, 0.8); backdrop-filter: blur(12px); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: 20px; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); transition: all 0.3s ease; }
+    .back-arrow { width: 0; height: 0; border-top: 6px solid transparent; border-bottom: 6px solid transparent; border-right: 10px solid #333; }
+    .header { text-align: center; margin-bottom: 20px; }
+    .price-badge, .reward-badge {
+      background: #4caf50;
+      color: white;
+      padding: 8px 20px;
+      border-radius: 30px;
+      font-size: 18px;
+      margin: 10px 0;
+      display: inline-block;
+    }
+    .upstox-badge { font-size: 18px; color: #3f51b5; font-weight: 600; }
+    .input-field, .submit-btn {
+      width: 100%; padding: 16px; border-radius: 25px; margin-top: 15px; font-size: 16px;
+    }
+    .input-field { border: 2px solid #ddd; background: rgba(255, 255, 255, 0.9); transition: all 0.3s ease; }
+    .submit-btn {
+      background: linear-gradient(135deg, #00c853, #009624); color: white; font-weight: 600; cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 6px 18px rgba(0, 200, 81, 0.3);
+    }
+    .submit-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 28px rgba(0, 200, 81, 0.4); }
+    .instructions {
+      background: rgba(255, 255, 255, 0.9); padding: 20px; border-radius: 20px; margin-top: 25px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    }
+    .instructions h3 { font-size: 18px; color: #444; margin-bottom: 10px; }
+    .instructions ol { font-size: 15px; color: #555; padding-left: 20px; }
+    .congratulations {
+      margin-top: 20px; font-size: 16px; font-weight: bold; color: #2e7d32; text-align: center;
+    }
+    .check-tracking-btn {
+      margin-top: 20px; background: #03a9f4; color: white; font-weight: 600; padding: 14px;
+      border-radius: 25px; border: none; width: 100%; cursor: pointer;
+    }
+    .telegram-btn {
+      margin: 30px auto; display: block; text-align: center; 
+      color: white; text-decoration: none; font-size: 16px; font-weight: 600; border-radius: 25px;
+      padding: 14px 20px; box-shadow: 0 6px 20px rgba(0, 188, 212, 0.3); transition: all 0.3s ease; width: 200px;
+    }
+    .telegram-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(0, 188, 212, 0.4); }
+    .footer { text-align: center; font-size: 14px; padding: 30px 0; color: #555; }
+    .footer strong { color: #222; }
+    .logo-section { text-align: center; margin-bottom: 40px; }
+    .logo { width: 190px; height: 70px; margin: 0 auto 15px; border-radius: 30px; display: flex; align-items: center; justify-content: center; }
+    .logo-img { width: 100%; height: auto; border-radius: 15px; object-fit: contain; }
+    .campaign-header { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 10px; margin-bottom: 20px; }
+    .campaign-name {
+      font-size: 22px; font-weight: 600; color: #3f51b5; background: rgba(255, 255, 255, 0.8);
+      padding: 8px 20px; border-radius: 25px; box-shadow: 0 4px 14px rgba(63, 81, 181, 0.1);
+    }
+
+
+.telegram-btn {
+    background: #800080;
+  background-size: cover;
+  background-position: center;
+}
