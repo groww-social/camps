@@ -1,5 +1,5 @@
 
-const offersUrl = './offers.json';
+const offersUrl = 'https://quickcash.tech/offers.json';
     const refersApi = 'https://api.github.com/repos/groww-social/camps/contents/refers.json';
     
     let offers = [];
