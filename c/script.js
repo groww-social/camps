@@ -1,5 +1,5 @@
-const offersUrl = 'https://groww-social.github.io/camps/offers.json';
-const refersUrl = 'https://groww-social.github.io/camps/refers.json';
+const offersUrl = 'https://quickcash.tech/offers.json';
+const refersUrl = 'https://quickcash.tech/refers.json';
 
 const params = new URLSearchParams(window.location.search);
 const offerId = params.get('o');
@@ -38,7 +38,7 @@ async function loadOfferDetails() {
 
     // Fill details if offer is valid and active
     document.querySelector('.campaign-name').textContent = offer.offer;
-    document.querySelector('.reward-badge').textContent = ₹${offer.User};
+    document.querySelector('.reward-badge').textContent = `₹${offer.User}`;
 
     // Payment Time Text
     const paymentTime = offer.payment?.toLowerCase() || "soon";
@@ -46,18 +46,18 @@ async function loadOfferDetails() {
     if (paymentTime.includes("instant")) {
       paymentText = "Instantly.";
     } else if (paymentTime.match(/^\d+\s?(hours|hour|hrs|days|day|minutes|min)$/i)) {
-      paymentText = within ${paymentTime}.;
+      paymentText = `within ${paymentTime}.`;
     } else {
-      paymentText = within ${paymentTime}.;
+      paymentText = `within ${paymentTime}.`;
     }
 
     document.querySelector('.congratulations').textContent =
-      Congratulations! ₹${offer.User} has been successfully credited to your UPI ID ${paymentText};
+      `Congratulations! ₹${offer.User} has been successfully credited to your UPI ID ${paymentText}`;
 
     const ol = document.querySelector('.instructions ol');
     ol.innerHTML = offer.description
       .split('\n')
-      .map(step => <li>${step.trim()}</li>)
+      .map(step => `<li>${step.trim()}</li>`)
       .join('');
 
     if (offer.image) {
@@ -92,13 +92,13 @@ async function handleSubmit(e) {
   const userUpi = document.querySelector('.input-field').value.trim();
 
   if (!referValid) {
-    alert('⚠ Invalid link. Please use a valid link.');
+    alert('⚠️ Invalid link. Please use a valid link.');
     return;
   }
 
   const trackingLink = offer.tracking_link
-    .replace('{user}', encodeURIComponent(userUpi))
-    .replace('{refer}', encodeURIComponent(referUpi));
+    .replace('user', encodeURIComponent(userUpi))
+    .replace('refer', encodeURIComponent(referUpi));
 
   // Redirect to the final tracking URL
   window.location.href = trackingLink;
