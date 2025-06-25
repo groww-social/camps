@@ -1,12 +1,11 @@
 [
   {
-    "user_upi": "aaa@upi",
-    "refer_upi": "bbb@upi",
-    "offer_id": "123",
-    "ip": "1.1.1.1",
-    "click_time": "2025-06-25T12:00",
-    "conversion_time": "2025-06-25T12:05",
-    "event": "signup",
-    "time_logged": "2025-06-25T11:23:30.056Z"
+    "user_upi": "9040314183@upi",
+    "refer_upi": "9040314183@axl",
+    "offer_id": "491",
+    "user_payout": "10",
+    "refer_payout": "10",
+    "appname": "Navi_UPI",
+    "event": "First Transfer"
   }
 ]
