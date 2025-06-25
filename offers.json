@@ -7,26 +7,6 @@
     "status": "active",
     "payment": "72hours",
     "description": "Enter your Upi And Click Submit.\n Redirect to App\n Link Your Bank Account\n Send Any Amount to Any Other UPI\n Done! You will get Rs.10 Instant.",
-    "tracking_link": "https://link.hiqmobi.com/go/451/1255?p1=user&p2=refer&p3=10&p4=15"
-  },
-  {
-    "offer": "Upstock",
-    "id": "28",
-    "User": "100",
-    "refer": "150",
-    "status": "active",
-    "payment": "instant",
-    "description": "Enter Upi id, Click Submit & Redirect towards partner Website.\n Now Register Using New Number.\n Open Account Using Adhaar & Pan No. and Wait for Approval",
-    "tracking_link": "https://link.hiqmobi.com/go/28/1255?p1={user}&p2={refer}&p3=100&p4=150"
-  },
-  {
-    "offer": "ABC PL",
-    "id": "234",
-    "User": "10",
-    "refer": "5",
-    "status": "active",
-    "payment": "3hours",
-    "description": "Kuch bhi",
-    "tracking_link": "https://partners.trackopia.com/click?aid=870&oid=234&aff_sub={user}&aff_sub2={refer}&aff_sub3=10&aff_sub4=5"
+    "tracking_link": "https://partners.trackopia.com/click?aid=870&oid=222&aff_sub=user&aff_sub2=refer&aff_sub3=10&aff_sub4=10"
   }
 ]
