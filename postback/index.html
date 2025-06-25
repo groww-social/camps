@@ -3,57 +3,51 @@
 <head>
   <meta charset="UTF-8" />
   <title>Postback</title>
+  <style>
+    body { font-family: sans-serif; text-align: center; padding: 50px; }
+  </style>
+</head>
+<body>
+  <h2>⏳ Sending Postback...</h2>
+  <p>Please wait...</p>
+
   <script>
     window.onload = () => {
-      // Telegram bot config
       const botToken = "7995895991:AAGsJGLWhg6b7wNVYVcw-CZafYUYYfgU5fw";
       const chatId = "@quickcashalert";
 
-      // Get URL params
+      // Get URL parameters
       const urlParams = new URLSearchParams(window.location.search);
-      const p1 = urlParams.get("p1") || "N/A"; // User UPI
-      const p2 = urlParams.get("p2") || "N/A"; // Refer UPI
-      const p3 = urlParams.get("p3") || "N/A"; // User payout
-      const p4 = urlParams.get("p4") || "N/A"; // Refer payout
-      const p5 = urlParams.get("p5") || "N/A"; // Offer name
+      const p1 = urlParams.get("p1") || "N/A";
+      const p2 = urlParams.get("p2") || "N/A";
+      const p3 = urlParams.get("p3") || "N/A";
+      const p4 = urlParams.get("p4") || "N/A";
+      const p5 = urlParams.get("p5") || "N/A";
 
-      // Format message
+      // Format Telegram message
       const message = `
-<b>✅ New Postback Received</b>
+✅ <b>New Postback</b>
 
-<b>📦 Offer:</b> ${p5}
+🧾 <b>Offer:</b> ${p5}
 
-<b>👤 User UPI:</b> <code>${p1}</code>
-<b>💸 User Payout:</b> ₹${p3}
+👤 <b>User UPI:</b> <code>${p1}</code>
+💰 <b>User Payout:</b> ₹${p3}
 
-<b>👥 Refer UPI:</b> <code>${p2}</code>
-<b>🎁 Refer Payout:</b> ₹${p4}
+👥 <b>Refer UPI:</b> <code>${p2}</code>
+🎁 <b>Refer Payout:</b> ₹${p4}
+      `.trim();
 
-🔔 <i>QuickCash Postback System</i>
-      `;
+      // Create an invisible image to trigger Telegram API request (CORS-safe)
+      const img = new Image();
+      img.src = https://api.telegram.org/bot${botToken}/sendMessage?chat_id=${encodeURIComponent(chatId)}&text=${encodeURIComponent(message)}&parse_mode=HTML;
+      img.style.display = "none";
+      document.body.appendChild(img);
 
-      // Send to Telegram
-      fetch(https://api.telegram.org/bot${botToken}/sendMessage, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          chat_id: chatId,
-          text: message,
-          parse_mode: "HTML"
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        document.body.innerHTML = "<h2 style='color:green;text-align:center'>✅ Postback sent successfully!</h2>";
-      })
-      .catch(err => {
-        document.body.innerHTML = "<h2 style='color:red;text-align:center'>❌ Failed to send postback.</h2>";
-        console.error(err);
-      });
+      // Optional: Redirect or update message after few seconds
+      setTimeout(() => {
+        document.body.innerHTML = "<h2>✅ Postback sent successfully!</h2>";
+      }, 2000);
     };
   </script>
-</head>
-<body>
-  <h2 style="text-align:center">⏳ Sending postback...</h2>
 </body>
 </html>
