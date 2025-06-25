@@ -7,25 +7,5 @@
     "refer_payout": "10",
     "appname": "Navi_UPI",
     "event": "First Transfer"
-  },
-  {
-    "user_upi": "user@upi",
-    "refer_upi": "refer@upi",
-    "offer_id": "app_name",
-    "ip": "user_payout",
-    "click_time": "refer_payout",
-    "conversion_time": "offer_id",
-    "event": "event_name",
-    "time_logged": "2025-06-25T11:51:52.895Z"
-  },
-  {
-    "user_upi": null,
-    "refer_upi": null,
-    "offer_id": null,
-    "ip": null,
-    "click_time": null,
-    "conversion_time": null,
-    "event": null,
-    "time_logged": "2025-06-25T11:53:51.444Z"
   }
 ]
