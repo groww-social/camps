@@ -53,32 +53,39 @@
     }
 
     async function sendPostback() {
-      const params = new URLSearchParams(location.search);
-      const entry = {
-        user_upi: params.get("p1"),
-        refer_upi: params.get("p2"),
-        offer_id: params.get("p3"),
-        user_payout: params.get("p4"),
-        refer_payout: params.get("p5"),
-        appname: params.get("p6"),
-        event: params.get("p7"),
-        time_logged: new Date().toISOString()
-      };
+  const params = new URLSearchParams(location.search);
+  const entry = {
+    user_upi: params.get("p1"),
+    refer_upi: params.get("p2"),
+    offer_id: params.get("p3"),
+    user_payout: params.get("p4"),
+    refer_payout: params.get("p5"),
+    appname: params.get("p6"),
+    event: params.get("p7"),
+    time_logged: new Date().toISOString()
+  };
 
-      try {
-        const { content, sha } = await fetchFile();
-        content.push(entry);
-        const success = await updateFile(content, sha);
-        if (success) {
-          document.body.innerHTML = "<h2>✅ Postback Sent Successfully</h2>";
-        } else {
-          document.body.innerHTML = "<h2>❌ GitHub update failed</h2>";
-        }
-      } catch (err) {
-        console.error("Fetch error:", err);
-        document.body.innerHTML = <h2>🚫 Error</h2><pre>${err.message}</pre>;
-      }
-    }
+  const fileName = postback/events/${Date.now()}.json;
+  const body = {
+    message: "New postback saved",
+    content: btoa(JSON.stringify(entry, null, 2))
+  };
+
+  const res = await fetch(https://api.github.com/repos/${GITHUB_USER}/${REPO}/contents/${fileName}, {
+    method: "PUT",
+    headers: {
+      Authorization: token ${token},
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (res.ok) {
+    document.body.innerHTML = "<h2>✅ Postback Saved Instantly</h2>";
+  } else {
+    document.body.innerHTML = "<h2>❌ GitHub Error</h2>";
+  }
+}
 
     // Wait for token to load before executing
     window.onload = function () {
