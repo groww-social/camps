@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Page Not Found</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #f8d7da 0%, #f5c2c7 50%, #f1aeb5 100%);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen;
+      overflow: hidden;
+    }
+
+    .container {
+      text-align: center;
+      padding: 30px;
+      border-radius: 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      animation: fadeInUp 1s ease forwards;
+      transform: translateY(30px);
+      opacity: 0;
+    }
+
+    h1 {
+      font-size: 4rem;
+      color: #ff5f5f;
+      margin-bottom: 10px;
+      font-weight: 700;
+    }
+
+    p {
+      font-size: 1.3rem;
+      color: #ffffffcc;
+      margin-bottom: 20px;
+    }
+
+    a {
+      color: #00bfff;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    @keyframes fadeInUp {
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.07);
+      filter: blur(20px);
+      animation: float 10s ease-in-out infinite;
+    }
+
+    .circle1 {
+      width: 200px;
+      height: 200px;
+      top: -50px;
+      left: -50px;
+    }
+
+    .circle2 {
+      width: 150px;
+      height: 150px;
+      bottom: -40px;
+      right: -40px;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0) rotate(0);
+      }
+      50% {
+        transform: translateY(-20px) rotate(20deg);
+      }
+    }
+    /* Animated Circles */
+    .circle {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.6;
+      z-index: 0;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-20px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+
+     /* 16 Circles with unique sizes, positions, and delays */
+    .circle-1 { width: 80px; height: 80px; background: #ff8a80; top: 10%; left: 10%; animation: float 6s ease-in-out infinite; }
+    .circle-2 { width: 70px; height: 70px; background: #a29bfe; bottom: 10%; right: 15%; animation: float 8s ease-in-out infinite; }
+    .circle-3 { width: 90px; height: 90px; background: #00b894; top: 50%; right: -30px; animation: float 7s ease-in-out infinite; }
+    .circle-4 { width: 120px; height: 120px; background: #ffd93d; top: 35%; right: 5%; animation: float 10s ease-in-out infinite; }
+    .circle-5 { width: 60px; height: 60px; background: #6c5ce7; top: 60%; left: -10px; animation: float 5s ease-in-out infinite; }
+    .circle-6 { width: 90px; height: 90px; background: #a29bfe; left: 10%; top: 70%; animation: float 9s ease-in-out infinite; }
+    .circle-7 { width: 110px; height: 110px; background: #fd79a8; left: -30px; top: 75%; animation: float 12s ease-in-out infinite; }
+    .circle-8 { width: 80px; height: 80px; background: #00cec9; left: 15%; bottom: 20%; animation: float 6s ease-in-out infinite; }
+    .circle-9 { width: 95px; height: 95px; background: #e17055; right: 20%; bottom: 15%; animation: float 8s ease-in-out infinite; }
+    .circle-10 { width: 75px; height: 75px; background: #0984e3; right: -20px; bottom: 25%; animation: float 10s ease-in-out infinite; }
+    .circle-11 { width: 85px; height: 85px; background: #55a3ff; left: 50%; bottom: 10%; animation: float 7s ease-in-out infinite, pulse 5s ease-in-out infinite; }
+    .circle-12 { width: 65px; height: 65px; background: #ff7675; right: 10%; bottom: 35%; animation: float 9s ease-in-out infinite; }
+    .circle-13 { width: 105px; height: 105px; background: #81ecec; left: -40px; bottom: 5%; animation: float 12s ease-in-out infinite, pulse 6s ease-in-out infinite; }
+    .circle-14 { width: 90px; height: 90px; background: #fab1a0; right: -30px; bottom: 5%; animation: float 8s ease-in-out infinite; }
+    .circle-15 { width: 70px; height: 70px; background: #55efc4; left: 30%; bottom: 30%; animation: float 9s ease-in-out infinite; }
+    .circle-16 { width: 100px; height: 100px; background: #ffb74d; top: 20%; left: 45%; animation: float 11s ease-in-out infinite; }
+  </style>
+  <script>
+    setTimeout(() => {
+      window.location.href = "https://t.me/quickcashoffers";
+    }, 5000);
+  </script>
+</head>
+<body>
+    <div class="circle circle-1"></div>
+  <div class="circle circle-2"></div>
+  <div class="circle circle-3"></div>
+  <div class="circle circle-4"></div>
+  <div class="circle circle-5"></div>
+  <div class="circle circle-6"></div>
+  <div class="circle circle-7"></div>
+  <div class="circle circle-8"></div>
+  <div class="circle circle-9"></div>
+  <div class="circle circle-10"></div>
+  <div class="circle circle-11"></div>
+  <div class="circle circle-12"></div>
+  <div class="circle circle-13"></div>
+  <div class="circle circle-14"></div>
+  <div class="circle circle-15"></div>
+  <div class="circle circle-16"></div>
+  <div class="circle circle1"></div>
+  <div class="circle circle2"></div>
+
+  <div class="container">
+    <h1>404</h1>
+    <p>Page not found</p>
+    <p>Redirecting to our <a href="https://t.me/quickcashoffers" target="_blank">Telegram channel</a>...</p>
+  </div>
+</body>
+</html>
