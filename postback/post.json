@@ -78,5 +78,15 @@
     "offer_id": "491",
     "event": "FirstTransfer",
     "time_logged": "2025-06-25T13:16:56.776Z"
+  },
+  {
+    "user_upi": "9040314183@ybl",
+    "refer_upi": "9040314183@oksbi",
+    "appname": "Navi_UPI",
+    "user_payout": "100",
+    "refer_payout": "100",
+    "offer_id": "491",
+    "event": "FirstTransfer",
+    "time_logged": "2025-06-26T04:28:13.908Z"
   }
 ]
