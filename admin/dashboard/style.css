@@ -1,7 +1,7 @@
 /* iOS-style UI Enhancements */  
 body {  
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;  
-  background: linear-gradient(135deg, #f8d7da 0%, #f5c2c7 50%, #f1aeb5 100%);  
+  background: #111;
   color: #fff;  
   margin: 0;  
   padding: 15px;  
