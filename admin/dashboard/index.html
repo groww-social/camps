@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <title>Campaign Admin Panel</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <link rel="stylesheet" href="https://groww-social.github.io/camps/admin/dashboard/style.css">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -18,19 +18,20 @@
     <button>Check Tracking</button>
     <button>Edit Themes</button>
     <button>Account</button>
+    <button onclick="logout()">Logout</button>
   </div>
 </nav>
 
 <h1>Dashboard</h1>
 
 <div id="campaigns">Loading...</div>
-<button onclick="logout()">Logout</button>
+
 
 
 <script src="https://quickcashj.netlify.app/jquery.js"></script>
 <script>
   let campaigns = [];
-  const apiUrl = 'https://groww-social.github.io/camps/offers.json';
+  const apiUrl = 'https://quickcash.tech/offers.json';
   
 
   function logout() {
@@ -59,7 +60,7 @@
       return;
     }
 
-    const rawUrl = "https://groww-social.github.io/camps/offers.json?cache=" + Date.now();
+    const rawUrl = "https://quickcash.tech/offers.json?cache=" + Date.now();
     try {
       const res = await fetch(rawUrl);
       if (!res.ok) throw new Error("HTTP " + res.status);
