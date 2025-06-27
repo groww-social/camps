@@ -135,7 +135,7 @@
       const p = document.getElementById("password").value.trim();
 
       try {
-        const res = await fetch('/u.json?nocache=' + Date.now());
+        const res = await fetch('u.json?nocache=' + Date.now());
         if (!res.ok) throw new Error("File not found or CORS issue");
         const data = await res.json();
 
