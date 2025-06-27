@@ -6,14 +6,14 @@
 
     html, body {  
         font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Helvetica Neue', sans-serif;  
-        background: linear-gradient(135deg, #f8d7da 0%, #f5c2c7 50%, #f1aeb5 100%);  
+        background: #111;  
         height: 100%;  
         position: relative;  
         overflow-x: hidden;  
         -webkit-font-smoothing: antialiased;  
         -moz-osx-font-smoothing: grayscale;  
         padding: 20px;
-        color: #333;
+        color: #fff;
     }
 
     .container {
