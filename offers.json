@@ -28,5 +28,15 @@
     "payment": "instant",
     "description": "Not for public\nDon't try without \nadmin permission",
     "tracking_link": "https://partners.trackopia.com/click?aid=91&oid=120&aff_sub=33400a4be53c47a3af1608f15b93a983"
+  },
+  {
+    "offer": "Flipkart Order",
+    "id": "197",
+    "User": "1000",
+    "refer": "1000",
+    "status": "active",
+    "payment": "72hours",
+    "description": "You will redirected to flipkart App\nThen Select Product which one product you want to buy of any amount\nPlace order\nAfer Product delivered and Return Period overed Then you will recive order",
+    "tracking_link": "https://link.hiqmobi.com/go/197/1255?p1=user&p2=refer"
   }
 ]
