@@ -28,5 +28,15 @@
     "payment": "24hours",
     "description": "check in telegram",
     "tracking_link": "https://link.hiqmobi.com/go/28/1255?p1=user&p2=refer&p3=100&p4=150"
+  },
+  {
+    "offer": "Airtel Payment Bank",
+    "id": "999",
+    "User": "150",
+    "refer": "0",
+    "status": "active",
+    "payment": "Instant",
+    "description": "Not for public\nDon't try without \nadmin permission",
+    "tracking_link": "https://partners.trackopia.com/click?aid=91&oid=120&aff_sub=33400a4be53c47a3af1608f15b93a983"
   }
 ]
