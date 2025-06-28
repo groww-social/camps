@@ -9,6 +9,62 @@ let offer = null;
 let referUpi = null;
 let referValid = false;
 
+// ✅ Handle UPI form submission (merged & corrected)
+async function handleSubmit(event) {
+  event.preventDefault();
+
+  const userUpi = document.querySelector('.input-field').value.trim();
+  const upiRegex = /^[a-zA-Z0-9._]{2,}@[a-zA-Z0-9]{2,20}$/;
+
+  if (!upiRegex.test(userUpi)) {
+    showPopup("⛔ Invalid UPI ID", `
+      Bhai, galat UPI ID daala hai!<br>
+      Dhyan se sahi UPI ID daal warna paisa nahi milega.<br><br>
+      Baad mein mat kehna ki <b style="color:#ff3b30;">Quick Cash</b> paisa nahi deta! 😤
+    `);
+    return;
+  }
+
+  if (!referValid || !referUpi || !offer || !offer.tracking_link) {
+    alert('⚠️ Invalid link or data still loading. Please try again.');
+    return;
+  }
+
+  const trackingLink = offer.tracking_link
+    .replace('user', encodeURIComponent(userUpi))
+    .replace('refer', encodeURIComponent(referUpi));
+
+  window.location.href = trackingLink;
+}
+
+// Popup for invalid UPI
+function showPopup(title, message) {
+  const popup = document.createElement('div');
+  popup.className = 'popup-bg';
+  popup.innerHTML = `
+    <div class="popup-box" style="
+      background: linear-gradient(135deg, #ffe6e6, #fff0f5, #e3f2fd);
+      border: 2px solid #fff;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.2);
+    ">
+      <h3 style="color: #d32f2f; font-size: 22px;">${title}</h3>
+      <p style="margin-top: 12px; font-size: 15.5px; color: #444;">${message}</p>
+      <div class="btns" style="margin-top: 25px;">
+        <button class="yes-btn" style="
+          background: linear-gradient(to right, #00c853, #64dd17);
+          color: #fff;
+          padding: 10px 22px;
+          font-size: 15px;
+          border-radius: 16px;
+          box-shadow: 0 6px 14px rgba(255, 105, 135, 0.4);
+          border: none;
+        " onclick="this.closest('.popup-bg').remove()">OK</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(popup);
+}
+
 // Load offer details
 async function loadOfferDetails() {
   try {
@@ -17,30 +73,24 @@ async function loadOfferDetails() {
     offer = offers.find(o => o.id === offerId);
 
     if (!offer) {
-      // Show error if offer not found
       document.querySelector('.container').style.display = 'none';
       document.getElementById('offer-not-found').style.display = 'block';
       return;
     }
 
-    // Check offer status
     if (offer.status && offer.status.toLowerCase() === 'over') {
       document.querySelector('.container').style.display = 'none';
       document.getElementById('offer-not-found').innerHTML = `
         <h2>🚫 Offer Paused</h2>
         <p>This offer is currently paused. We will notify you once it's live again.</p>
-        <p>Please join our Telegram channel to stay updated.</p>
-        <a href="https://t.me/quickcashoffers" class="telegram-btn">Join Telegram</a>
       `;
       document.getElementById('offer-not-found').style.display = 'block';
       return;
     }
 
-    // Fill details if offer is valid and active
     document.querySelector('.campaign-name').textContent = offer.offer;
     document.querySelector('.reward-badge').textContent = `₹${offer.User}`;
 
-    // Payment Time Text
     const paymentTime = offer.payment?.toLowerCase() || "soon";
     let paymentText = "soon.";
     if (paymentTime.includes("instant")) {
@@ -84,24 +134,6 @@ async function loadReferUpi() {
   } catch (err) {
     console.error('Error loading refer upi:', err);
   }
-}
-
-// Handle UPI form submission
-async function handleSubmit(e) {
-  e.preventDefault();
-  const userUpi = document.querySelector('.input-field').value.trim();
-
-  if (!referValid) {
-    alert('⚠️ Invalid link. Please use a valid link.');
-    return;
-  }
-
-  const trackingLink = offer.tracking_link
-    .replace('user', encodeURIComponent(userUpi))
-    .replace('refer', encodeURIComponent(referUpi));
-
-  // Redirect to the final tracking URL
-  window.location.href = trackingLink;
 }
 
 // Initialize
