@@ -128,5 +128,15 @@
     "offer_id": "28",
     "event": "order_placed",
     "time_logged": "2025-06-29T03:28:48.287Z"
+  },
+  {
+    "user_upi": "9040314183@axl",
+    "refer_upi": "9040314183@naviaxis",
+    "appname": "Flipkart",
+    "user_payout": "883",
+    "refer_payout": "29999",
+    "offer_id": "197",
+    "event": "order_deliver",
+    "time_logged": "2025-06-29T03:28:51.930Z"
   }
 ]
