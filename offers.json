@@ -7,7 +7,17 @@
     "status": "active",
     "payment": "3hours",
     "description": "Enter your Upi And Click Submit.\n Redirect to App\n Link Your Bank Account\n Send Any Amount to Any Other UPI\n Done! You will get Rs.10 Instant.",
-    "tracking_link": "https://link.hiqmobi.com/go/451/1255?p1={user}&p2={refer}&p3=10&p4=10"
+    "tracking_link": "https://partners.trackopia.com/click?aid=870&oid=222&aff_sub={user}&aff_sub2={refer}&aff_sub3=10&aff_sub4=10"
+  },
+  {
+    "offer": "Upstock",
+    "id": "28",
+    "User": "100",
+    "refer": "150",
+    "status": "active",
+    "payment": "24hours",
+    "description": "check in telegram",
+    "tracking_link": "https://link.hiqmobi.com/go/28/1255?p1=user&p2=refer&p3=100&p4=150"
   },
   {
     "offer": "Airtel Payment Bank",
@@ -18,15 +28,5 @@
     "payment": "instant",
     "description": "Not for public\nDon't try without \nadmin permission",
     "tracking_link": "https://partners.trackopia.com/click?aid=91&oid=120&aff_sub=d76a9e5cc12f48e2a4f60b7636fb5248"
-  },
-  {
-    "offer": "Flipkart Order",
-    "id": "197",
-    "User": "1000",
-    "refer": "1000",
-    "status": "active",
-    "payment": "72hours",
-    "description": "You will redirected to flipkart App\nThen Select Product which one product you want to buy of any amount\nPlace order\nAfer Product delivered and Return Period overed Then you will recive Payment",
-    "tracking_link": "https://link.hiqmobi.com/go/197/1255?p1=user&p2=refer"
   }
 ]
