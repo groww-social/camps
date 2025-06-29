@@ -7,7 +7,7 @@
     "status": "active",
     "payment": "3hours",
     "description": "Enter your Upi And Click Submit.\n Redirect to App\n Link Your Bank Account\n Send Any Amount to Any Other UPI\n Done! You will get Rs.10 Instant.",
-    "tracking_link": "https://partners.trackopia.com/click?aid=870&oid=222&aff_sub=user&aff_sub2=refer&aff_sub3=10&aff_sub4=10"
+    "tracking_link": "https://partners.trackopia.com/click?aid=870&oid=222&aff_sub={user}&aff_sub2={refer}&aff_sub3=10&aff_sub4=10"
   },
   {
     "offer": "Upstock",
