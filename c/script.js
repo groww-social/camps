@@ -31,8 +31,8 @@ async function handleSubmit(event) {
   }
 
   const trackingLink = offer.tracking_link
-    .replace('user', encodeURIComponent(userUpi))
-    .replace('refer', encodeURIComponent(referUpi));
+    .replace('{user}', encodeURIComponent(userUpi))
+    .replace('{refer}', encodeURIComponent(referUpi));
 
   window.location.href = trackingLink;
 }
