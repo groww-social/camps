@@ -158,5 +158,15 @@
     "offer_id": "491",
     "event": "Upi_transfer",
     "time_logged": "2025-06-29T14:06:02.080Z"
+  },
+  {
+    "user_upi": "{p1}",
+    "refer_upi": "{p2}",
+    "appname": "Navi",
+    "user_payout": "10",
+    "refer_payout": "10",
+    "offer_id": "491",
+    "event": "Upi_transfer",
+    "time_logged": "2025-07-05T09:59:18.188Z"
   }
 ]
