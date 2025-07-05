@@ -28,5 +28,15 @@
     "payment": "instant",
     "description": "Not for public\nDon't try without \nadmin permission",
     "tracking_link": "https://lootcampaign.o18.click/c?o=21393286&m=7916&a=414012&aff_click_id=60ee1d4993e24083ae07537c11a05cef"
+  },
+  {
+    "offer": "Bajaj Gold Loan",
+    "id": "101",
+    "User": "5",
+    "refer": "3",
+    "status": "active",
+    "payment": "Instant",
+    "description": "Test",
+    "tracking_link": "https://panel.earnindia.io/click/?pub_id=hrjEyRXBaI&campaign_id=101&p1={user}&p2={refer}"
   }
 ]
