@@ -14,8 +14,8 @@ async function handleSubmit(event) {
   event.preventDefault();
 
   const userUpi = document.querySelector('.input-field').value.trim();
-  const upiRegex = /^[a-zA-Z0-9._]{2,}@[a-zA-Z0-9]{2,20}$/;
-
+  const upiRegex = /^[a-zA-Z0-9._-]{2,}@[a-zA-Z0-9]{2,20}$/;
+  
   if (!upiRegex.test(userUpi)) {
     showPopup("⛔ Invalid UPI ID", `
       Bhai, galat UPI ID daala hai!<br>
